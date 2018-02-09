@@ -19,29 +19,15 @@ $(() => {
   let nbColumns = 19;
   let nbRows = 8;
   let totalNbSquares = nbColumns * nbRows;
-  let srcCoin = '<img class="coin" src="/images/coin.png" alt="coin">';
-  let srcEnnemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
+  let coin = '<img class="coin" src="/images/coin.png" alt="coin">';
+  let ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
 
 
   //TO DO
   //make site responsive for ipad
   //Function to generate grid
-  //create class for ennmy ?
 
-  //class definitions
-  // class Ennemy{
-  //   constructor(name,image){
-  //     this.name = name;
-  //     this.image = image;
-  //   }
-  //
-  // animates{
-  //
-  // }
-  // };
-
-
-  //Functions
+  //FUNCTIONS
   //displays 1st frame
   function firstFrame(){
     //make the grid disappear
@@ -64,21 +50,55 @@ $(() => {
 
   //Frame to start game
   function gameStart(){
-    //change background picture
-    // ------------> still to do
     //Show the grid
     $grid.show();
     //hide the $sections
     $sections.hide();
   }
 
-  function generateGame(){
-    animateElement(0, 200, 200, srcCoin);
-    animateElement(6, 2000, 200, srcCoin);
-    animateElement(3, 200, 200, srcEnnemyMushroom);
+
+  //MARIOOO
+
+  //GAME PLAN LEVEL 1
+  //Each element is animated as follow:
+  //animateElement(column, InitialTimeOut, incrTimeOut, src)
+  // column: nb of the column where the element falls
+  // initialTimeOut: delay before fall
+  // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
+  // src: which ennemy, which gives image to use
+
+  function Level1(){
+    //Duration 60 second so 6000 ms
+    //change background picture
+    // ------------> still to do
+    let avgIncrTimeOut = 400;
+    let rapidIncrTimeOut = 200;
+    animateElement(0, 200, avgIncrTimeOut, coin);
+    animateElement(6, 1000, avgIncrTimeOut, coin);
+    animateElement(5, 2000, rapidIncrTimeOut, ennemyMushroom);
+    animateElement(9, 3000, avgIncrTimeOut, coin);
+    animateElement(13, 4000, avgIncrTimeOut, coin);
+    animateElement(6, 5000, avgIncrTimeOut, coin);
+    animateElement(9, 6000, rapidIncrTimeOut, ennemyMushroom);
+    animateElement(15, 7000, avgIncrTimeOut, coin);
+    animateElement(11, 8000, avgIncrTimeOut, coin);
+    animateElement(3, 9000, avgIncrTimeOut, coin);
+    animateElement(7, 9000, rapidIncrTimeOut, ennemyMushroom);
+    animateElement(17, 10000, avgIncrTimeOut, coin);
+    animateElement(12, 12000, avgIncrTimeOut, coin);
+    animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom);
+    animateElement(3, 13000, avgIncrTimeOut, coin);
+    animateElement(19, 14000, avgIncrTimeOut, coin);
+    animateElement(10, 15000, avgIncrTimeOut, coin);
+    animateElement(18, 15000, avgIncrTimeOut, coin);
+    animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom);
+    animateElement(4, 16000, avgIncrTimeOut, coin);
+    animateElement(8, 17000, avgIncrTimeOut, coin);
+    //to continue until 60 seconds
+    //animateElement(6, 60000, averageSpeed, coin);
   }
 
-  function animateElement(column, InitialTimeOut, invSpeed, src){
+  function animateElement(column, InitialTimeOut, incrTimeOut, src){
     //initialise timeout
     let timeOutIncrement = InitialTimeOut;
     //loop to animate coin in the column
@@ -86,28 +106,12 @@ $(() => {
       setTimeout(() => {
         $($squares[i]).html(src);
       }, timeOutIncrement);
-      timeOutIncrement = timeOutIncrement + invSpeed;
+      timeOutIncrement = timeOutIncrement + incrTimeOut;
       setTimeout(() => {
         $($squares[i]).html('');
       }, timeOutIncrement);
     }
   }
-
-  // function animateElement(column, InitialTimeOut, invSpeed, src){
-  //   //initialise coin position in column
-  //   let timeOutIncrement = InitialTimeOut;
-  //   $($squares[column]).html(src);
-  //   //loop to animate coin in the column
-  //   for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
-  //     setTimeout(() => {
-  //       $($squares[i]).html('');
-  //     }, timeOutIncrement);
-  //     setTimeout(() => {
-  //       $($squares[i + nbColumns]).html(src);
-  //     }, timeOutIncrement);
-  //     timeOutIncrement = timeOutIncrement + invSpeed;
-  //   }
-  // }
 
 
   //Link functions with DOM elements
@@ -117,6 +121,6 @@ $(() => {
   //Call function to initialise first screen
   //firstFrame();
   gameStart();
-  generateGame();
+  Level1();
 
 });
