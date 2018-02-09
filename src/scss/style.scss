@@ -6,7 +6,7 @@ body {
   height: 100vh;
 
   .gameBoardContainer{
-    width: 100%;
+    width: 1450px;
     margin: 0 auto;
     height: 100%;
     // display: flex;
@@ -84,21 +84,35 @@ body {
           height: 75px;
           width: 75px;
           background-color: pink;
-          border: 1px black solid;
+          //border: 1px black solid;
           display: flex;
           justify-content: center;
           align-items: center;
+          //position: relative;
 
-          @-webkit-transition-property: all; //need to define when value is changed
-          @-webkit-transition-duration: 30s;
-          @-webkit-transition-timing-function: linear;
+          // @-webkit-transition-property: all; //need to define when value is changed
+          // @-webkit-transition-duration: 30s;
+          // @-webkit-transition-timing-function: linear;
+
+          img{
+            //position: absolute;
+            // @-webkit-transition-property: top;
+            // @-webkit-transition-duration: 10s;
+            // @-webkit-transition-timing-function: linear;
+            // animation: moveDown 200ms linear; //duration of 200ms
+
+          }
+
         }
-
       }
     }
-
     footer{
 
     }
   }
 }
+
+// @-webkit-keyframes moveDown{
+//   from {top: 0px;}
+//   to {top: 38.5px;}
+// }

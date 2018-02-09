@@ -16,22 +16,29 @@ $(() => {
   let level = 1;
   let nbLives = 3;
   //nb of squares = 152; 19 columns * 8 rows
+  let nbColumns = 19;
+  let nbRows = 8;
+  let totalNbSquares = nbColumns * nbRows;
+  let srcCoin = '<img class="coin" src="/images/coin.png" alt="coin">';
+  let srcEnnemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
 
 
   //TO DO
-  //make site responsive for ipad - grid should not collapse
+  //make site responsive for ipad
+  //Function to generate grid
+  //create class for ennmy ?
 
   //class definitions
-  class Ennemy{
-    constructor(name,image){
-      this.name = name;
-      this.image = image;
-    }
-
-    // animates{
-    //
-    // }
-  };
+  // class Ennemy{
+  //   constructor(name,image){
+  //     this.name = name;
+  //     this.image = image;
+  //   }
+  //
+  // animates{
+  //
+  // }
+  // };
 
 
   //Functions
@@ -39,11 +46,8 @@ $(() => {
   function firstFrame(){
     //make the grid disappear
     $grid.hide();
-    //hide mario picture - but still could see it for 1 sec
-    // $marioIntro.hide();
     //show all sections
     $sections.show();
-
   }
 
   //displays second frame
@@ -68,26 +72,43 @@ $(() => {
     $sections.hide();
   }
 
-  function animateCoin(){
-    setTimeout(() => {
-      $($squares[0]).html('');
-    }, 200);
-    setTimeout(() => {
-      $($squares[18]).html('<img class="coin" src="/images/coin.png" alt="coin">');
-    }, 200);
-    setTimeout(() => {
-      $($squares[18]).html('');
-    }, 300);
-    setTimeout(() => {
-      $($squares[18*2]).html('<img class="coin" src="/images/coin.png" alt="coin">');
-    }, 300);
-    setTimeout(() => {
-      $($squares[18*2]).html('');
-    }, 400);
-    setTimeout(() => {
-      $($squares[18*3]).html('<img class="coin" src="/images/coin.png" alt="coin">');
-    }, 400);
+  function generateGame(){
+    animateElement(0, 200, 200, srcCoin);
+    animateElement(6, 2000, 200, srcCoin);
+    animateElement(3, 200, 200, srcEnnemyMushroom);
   }
+
+  function animateElement(column, InitialTimeOut, invSpeed, src){
+    //initialise timeout
+    let timeOutIncrement = InitialTimeOut;
+    //loop to animate coin in the column
+    for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
+      setTimeout(() => {
+        $($squares[i]).html(src);
+      }, timeOutIncrement);
+      timeOutIncrement = timeOutIncrement + invSpeed;
+      setTimeout(() => {
+        $($squares[i]).html('');
+      }, timeOutIncrement);
+    }
+  }
+
+  // function animateElement(column, InitialTimeOut, invSpeed, src){
+  //   //initialise coin position in column
+  //   let timeOutIncrement = InitialTimeOut;
+  //   $($squares[column]).html(src);
+  //   //loop to animate coin in the column
+  //   for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
+  //     setTimeout(() => {
+  //       $($squares[i]).html('');
+  //     }, timeOutIncrement);
+  //     setTimeout(() => {
+  //       $($squares[i + nbColumns]).html(src);
+  //     }, timeOutIncrement);
+  //     timeOutIncrement = timeOutIncrement + invSpeed;
+  //   }
+  // }
+
 
   //Link functions with DOM elements
   $middleSection.on('click',secondFrame);
@@ -96,7 +117,6 @@ $(() => {
   //Call function to initialise first screen
   //firstFrame();
   gameStart();
-  animateCoin();
-
+  generateGame();
 
 });
