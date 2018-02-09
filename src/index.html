@@ -3,11 +3,116 @@
   <head>
     <meta charset="utf-8">
     <title>WDI Project 1: JavaScript Game</title>
-    <!-- add Jquery cdn  -->
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/app.js" charset="utf-8"></script>
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-    <h1>WDI Project 1: JavaScript Game</h1>
+    <div class="gameBoardContainer">
+      <header>
+        <!-- displays total score, number of coins, level and Timer -->
+        <div class="globalScore">
+          Mario <span class="scoreSpan">00000</span>
+        </div>
+        <div class="coins">
+          Coins x<span class="coinsSpan">00</span>
+        </div>
+        <div class="level">
+          Level x<span class="levelSpan">1</span>
+        </div>
+        <div class="timer">
+          Time:<span class="">60</span>
+        </div>
+      </header>
+      <main>
+
+        <!-- For intro screens -->
+        <section class="topSection">Welcome to Mario Coin Quest!</section>
+        <section class="middleSection">
+          <img class="marioIntro" src="/images/littleMario.png" alt="mario" style="display: none">
+          <p>1 Player Game</p>
+        </section>
+        <section class="bottomSection">
+          <p>Leaderboard</p>
+          <button class="goButton" style="display: none">GO!</button>
+        </section>
+        
+        <!-- For game and grid-->
+        <div class="mainGrid"> <!--Did 12 x 6 grid -->
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+          <div class="square"></div>
+        </div>
+
+
+      </main>
+
+      <footer>
+        <!-- Made with love by Fabienne P -->
+      </footer>
+    </div>
   </body>
 </html>
+
+<!-- <h1>Mario coin catch</h1> -->
+<!-- <img src="/images/littleMario.png" alt="mario">
+<img src="/images/ennemyMushroom.png" alt="ennemyMushroom">
+<img src="/images/coin.png" alt="coin"> -->
