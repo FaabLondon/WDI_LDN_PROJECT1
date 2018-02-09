@@ -67,7 +67,7 @@ body {
           align-items: center;
 
           button{
-            
+            // to style !
           }
 
         }
@@ -81,10 +81,17 @@ body {
         flex-wrap: wrap;
 
         .square{
-          height: 120px;
-          width: 120px;
+          height: 75px;
+          width: 75px;
           background-color: pink;
-          //border: 0.1px black solid;
+          border: 1px black solid;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          @-webkit-transition-property: all; //need to define when value is changed
+          @-webkit-transition-duration: 30s;
+          @-webkit-transition-timing-function: linear;
         }
 
       }
