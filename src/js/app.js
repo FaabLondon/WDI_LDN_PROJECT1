@@ -15,27 +15,39 @@ $(() => {
   const $marioIntro = $('.marioIntro');
   const $goButton = $('.goButton');
   const $coin = $('.coin');
+  const $timer = $('.timer');
 
   //Initial variables for game
+  let timer = 0;
+  let timerID = 0;
+  let timeOutId = 0;
   let level = 1; //initial level
   let nbLives = 3; //initial number of lives
   const nbColumns = 19;
   const nbRows = 8;
   let marioPos = 136; //Mario initial position on all screens
   let nbCoins = 0; //initial number of coins
-  var timeouts = []; //will store all timeouts
+  let timeouts = []; //will store all timeouts
+  let globalScore = 0;
+  let leaderBoard = {};
 
-  //assets for Marion, ennemies and bonuses
+  //assets for Mario, ennemies and bonuses
   const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
   const ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
   const mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
   const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
 
+  //instructions per level
+  const instructions = {
+    'Level 1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">',
+    'Level 2': 'Congratulations on finishing Level 1. Now let\'s try to ....'
+  }
+
   //calculates total number of squares in grid
   const totalNbSquares = nbColumns * nbRows;
   //calculates the max left position and right position for Mario
   const leftPos = totalNbSquares - nbColumns; // to calculate depending on grid size
-  const rightPos = nbColumns * nbRows; // to calculate depending on grid size
+  const rightPos = totalNbSquares - 1; // to calculate depending on grid size
 
   //TO DO
   //make site responsive for ipad
@@ -57,18 +69,41 @@ $(() => {
     //initiliase content
     $topSection.text('Welcome to Mario Coin Quest!');
     $middleSectionText.text('1 Player Game');
-    $bottomSectionText.text('Leaderboard');
+    if (globalScore > 0){
+      //check if in top 5, //add score to leaderBoard object
+      $bottomSectionText.text('You made it to the Leader Board! Display Leaderboard'); //to update
+    }
+
     //initialise Variables
     level = 1; //initial level
-    nbLives = 3; //initial number of lives
-    nbCoins = 0; //initial number of coins
-    timeouts = []; 
+    globalScore = 0;
+    nbLives = 3; //initial number of live
+    timeouts = [];
     //show all sections
     $sections.show();
   }
 
+  function timeUpFrame(){
+    $grid.hide();
+    $sections.show();
+    $middleSectionText.text(`Time's up! You caught ${nbCoins} coins! Well done!`); //how to make appear as a box on top of grid?
+    $bottomSectionText.html('');
+    $marioIntro.hide();
+    $goButton.hide();
+    level++; //on to next level as time is up and no ennemy caught
+    globalScore = parseInt($scoreSpan.text()); //only when time up and to next level that global score is updated
+    setTimeout(() => {
+      secondFrame();
+    }, 3000);
+  }
+
+
   //displays second frame
   function secondFrame(){
+    nbCoins = 0; //initialise number of coins
+    //reset coin display
+    $coinsSpan.text(nbCoins);
+    //
     $grid.hide();
     $sections.show();
     //changes top section to Level X
@@ -82,12 +117,13 @@ $(() => {
       $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
       $goButton.show();
     } else {
+      $marioIntro.hide();
       $middleSectionText.text('GAME OVER');
       $bottomSectionText.html('');
       $goButton.hide();
       setTimeout(() => {
         firstFrame();
-      }, 2000);
+      }, 4000);
     }
   }
 
@@ -115,6 +151,26 @@ $(() => {
     const rapidIncrTimeOut = 200;
     //change background picture
     // ------------> still to do
+    // Timer for level 1
+    let initialTime = 30;
+
+    timer = initialTime;
+    timerID = setInterval(() => {
+      if (timer >= 0){
+        $timer.text(`Time:${timer--}`);
+      }
+    }, 1000);
+
+    //stops the timer after X seconds
+    //and says that time is up and nb coins caught
+    timeOutId = setTimeout(() => {
+      clearInterval(timerID);
+      $('.coin').toggleClass('coin');
+      $('.ennemy').toggleClass('ennemy');
+      $('.mario').toggleClass('mario');
+      timeUpFrame();
+    }, (initialTime +1) * 1000);
+
     //set Mario on 3rd square on the left
     $($squares[marioPos]).html(mario);
     $($squares[marioPos]).toggleClass('mario');
@@ -140,9 +196,27 @@ $(() => {
     animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
     animateElement(4, 16000, avgIncrTimeOut, coin, 'coin');
     animateElement(8, 17000, avgIncrTimeOut, coin, 'coin');
-    //to continue until 60 seconds
-    //animateElement(6, 60000, averageSpeed, coin);
+    animateElement(19, 18000, avgIncrTimeOut, coin, 'coin');
+    animateElement(9, 19000, avgIncrTimeOut, coin, 'coin');
+    animateElement(15, 20000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(9, 21000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(4, 21000, avgIncrTimeOut, coin, 'coin');
+    animateElement(12, 22000, avgIncrTimeOut, coin, 'coin');
+    animateElement(16, 23000, avgIncrTimeOut, coin, 'coin');
+    animateElement(8, 24000, avgIncrTimeOut, coin, 'coin');
+    animateElement(7, 26000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(17, 26000, avgIncrTimeOut, coin, 'coin');
+    animateElement(11, 27000, avgIncrTimeOut, coin, 'coin');
+    animateElement(19, 27000, avgIncrTimeOut, coin, 'coin');
+    animateElement(0, 28000, avgIncrTimeOut, coin, 'coin');
+    animateElement(5, 28000, avgIncrTimeOut, coin, 'coin');
+    animateElement(8, 29000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(12, 29000, avgIncrTimeOut, coin, 'coin');
+    animateElement(15, 30000, avgIncrTimeOut, coin, 'coin');
+
+
   }
+
 
   function animateElement(column, InitialTimeOut, incrTimeOut, src, type){
     //initialise timeout
@@ -154,7 +228,7 @@ $(() => {
         //set class 'type' on the div
         $($squares[i]).toggleClass(type);
         //check for a hit (Mario or ennemy in the same div)
-        if (checkHit($($squares[i])) !== true){//if no win/lose then update div with element
+        if (checkHit($($squares[i])) !== true){//if no hit then update div with element
           $($squares[i]).html(src);
         }
       }, timeOutIncrement));
@@ -178,11 +252,14 @@ $(() => {
       //increment nbCoins and update number of coins on screen
       nbCoins++;
       $coinsSpan.text(nbCoins);
-      score = `000${nbCoins * 100}`;
+      score = `000${globalScore + nbCoins * 100}`;
       $scoreSpan.text(score.substr(score.length - 5)); // to make sure length is alwasy 5 digit
       return true;
     }
     if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
+      //clear Timer
+      clearInterval(timerID);
+      clearTimeout(timeOutId);
       //if we have Mario and an ennemy in the same div, decrease life and go back to frame 2
       nbLives--;
       //clear all timeouts in the game to stop it
