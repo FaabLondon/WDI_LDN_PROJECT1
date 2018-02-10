@@ -12,6 +12,7 @@ $(() => {
   const $middleSectionText = $('.middleSection p');
   const $bottomSectionText = $('.bottomSection p');
   const $coinsSpan = $('.coinsSpan');
+  const $scoreSpan = $('.scoreSpan');
   const $marioIntro = $('.marioIntro');
   const $goButton = $('.goButton');
   const $coin = $('.coin');
@@ -126,29 +127,37 @@ $(() => {
     //loop to animate coin in the column
     for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
       //animate the element by making it appear and disappear from 1 square to the other
-      //if Mario is in a specific square, no animation
       setTimeout(() => {
         //set class 'type' on the div
         $($squares[i]).toggleClass(type);
-        //check for a win
-        if ($($squares[i]).hasClass('mario') === true){
-          //increment nbCoins and update number of coins on screen
-          nbCoins++;
-          $coinsSpan.text(parseInt($coinsSpan.text()) + 1);
-        } else { //do not show element image if mario is in the div
+        //check for a win (Mario in the same div)
+        if (checkWinLose($($squares[i])) !== true){//if no win/lose then update div with element
           $($squares[i]).html(src);
         }
       }, timeOutIncrement);
       timeOutIncrement = timeOutIncrement + incrTimeOut;
       setTimeout(() => {
         if ($($squares[i]).hasClass('mario') !== true){
-          //do not show element image if mario is in the div
+          //do not not delete element image if mario is in the div
           $($squares[i]).html('');
         }
         //in any case toggle class 'type' on the div
         $($squares[i]).toggleClass(type);
       }, timeOutIncrement);
     }
+  }
+
+  function checkWinLose($sq){
+    let score = 0;
+    if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
+      //increment nbCoins and update number of coins on screen
+      nbCoins++;
+      //console.log($scoreSpan.text());
+      $coinsSpan.text(nbCoins);
+      score = `000${nbCoins * 100}`;
+      $scoreSpan.text(score.substr(score.length - 5)); // to make sure length is alwasy 5 digit
+      return true;
+    } else return false;
   }
 
   //***********************LINK FUNCTIONS WITH DOM ELEMENTS*******************************
