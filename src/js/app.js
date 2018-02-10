@@ -1,9 +1,10 @@
 $(() => {
   console.log('JS Loaded');
 
-  //Global Variables
+  //****************************** Variables **********************************
+  //DOM variables
   const $grid = $('.mainGrid');
-  const $squares = $('.square');
+
   const $sections = $('section');
   const $topSection = $('.topSection');
   const $middleSection= $('.middleSection');
@@ -14,25 +15,39 @@ $(() => {
   const $marioIntro = $('.marioIntro');
   const $goButton = $('.goButton');
   const $coin = $('.coin');
-  let level = 1;
-  let nbLives = 3;
-  //nb of squares = 152; 19 columns * 8 rows
+
+  //Initial variables for game
+  let level = 1; //initial level
+  let nbLives = 3; //initial number of lives
   let nbColumns = 19;
   let nbRows = 8;
-  let totalNbSquares = nbColumns * nbRows;
+  let marioPos = 136; //Mario initial position on all screens
+  let nbCoins = 0; //initial number of coins
+
+  //assets for Marion, ennemies and bonuses
   let coin = '<img class="coin" src="/images/coin.png" alt="coin">';
   let ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
   let mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
-  let marioPos = 136;
-  let leftPos = 133; // to calculate depending on grid size
-  let rightPos = 152; // to calculate depending on grid size
-  let nbCoins = 0;
+
+  //calculates total number of squares in grid
+  let totalNbSquares = nbColumns * nbRows;
+  //calculates the max left position and right position for Mario
+  let leftPos = totalNbSquares - nbColumns; // to calculate depending on grid size
+  let rightPos = nbColumns * nbRows; // to calculate depending on grid size
 
   //TO DO
   //make site responsive for ipad
-  //Function to generate grid
 
-  //FUNCTIONS
+  //*********************************FUNCTIONS*********************************
+  //grid initialisation
+  function gridInit(){
+    for (let i = 0; i < nbColumns; i++){
+      for (let j = 0; j < nbRows; j++){
+        $grid.append($('<div></div>').addClass('square'));
+      }
+    }
+  }
+
   //displays 1st frame
   function firstFrame(){
     //make the grid disappear
@@ -42,7 +57,7 @@ $(() => {
   }
 
   //displays second frame
-  function secondFrame(e){
+  function secondFrame(){
     //changes top section to Level X
     $topSection.text(`Level ${level}`);
     //changes middle section to Level number of life and add Mario pic
@@ -61,9 +76,6 @@ $(() => {
     $sections.hide();
     level1();
   }
-
-
-  //MARIOOO
 
   //GAME PLAN LEVEL 1
   //Each element is animated as follow:
@@ -139,7 +151,8 @@ $(() => {
     }
   }
 
-  //LINK FUNCTIONS WITH DOM ELEMENTS
+  //***********************LINK FUNCTIONS WITH DOM ELEMENTS*******************************
+
   $middleSection.on('click',secondFrame);
   $goButton.on('click',gameStart);
 
@@ -167,10 +180,12 @@ $(() => {
     }
   });
 
-
   //Call function to initialise first screen
+  gridInit();
+  const $squares = $('.square'); //Is it ok to declare here? as if I declare with other variables the grid is not initialised
   firstFrame();
   //gameStart();
   //Level1();
+
 
 });
