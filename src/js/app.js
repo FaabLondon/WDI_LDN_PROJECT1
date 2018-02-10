@@ -19,23 +19,23 @@ $(() => {
   //Initial variables for game
   let level = 1; //initial level
   let nbLives = 3; //initial number of lives
-  let nbColumns = 19;
-  let nbRows = 8;
+  const nbColumns = 19;
+  const nbRows = 8;
   let marioPos = 136; //Mario initial position on all screens
   let nbCoins = 0; //initial number of coins
   var timeouts = []; //will store all timeouts
 
   //assets for Marion, ennemies and bonuses
-  let coin = '<img class="coin" src="/images/coin.png" alt="coin">';
-  let ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
-  let mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
-  let marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
+  const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
+  const ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
+  const mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
+  const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
 
   //calculates total number of squares in grid
-  let totalNbSquares = nbColumns * nbRows;
+  const totalNbSquares = nbColumns * nbRows;
   //calculates the max left position and right position for Mario
-  let leftPos = totalNbSquares - nbColumns; // to calculate depending on grid size
-  let rightPos = nbColumns * nbRows; // to calculate depending on grid size
+  const leftPos = totalNbSquares - nbColumns; // to calculate depending on grid size
+  const rightPos = nbColumns * nbRows; // to calculate depending on grid size
 
   //TO DO
   //make site responsive for ipad
@@ -54,6 +54,15 @@ $(() => {
   function firstFrame(){
     //make the grid disappear
     $grid.hide();
+    //initiliase content
+    $topSection.text('Welcome to Mario Coin Quest!');
+    $middleSectionText.text('1 Player Game');
+    $bottomSectionText.text('Leaderboard');
+    //initialise Variables
+    level = 1; //initial level
+    nbLives = 3; //initial number of lives
+    nbCoins = 0; //initial number of coins
+    timeouts = []; 
     //show all sections
     $sections.show();
   }
@@ -182,7 +191,6 @@ $(() => {
       }
       // Mario losing scenario: animates Mario and reinitilaise game
       MarioLosing();
-      //check if game over
       return true;
     }
   }
@@ -206,7 +214,7 @@ $(() => {
 
   function animateMarioLeftRight(e) {
     if(e.which === 37){ //left arrow
-      let newPos = Math.max(marioPos - 1, leftPos); // to avoid going out of screen
+      const newPos = Math.max(marioPos - 1, leftPos); // to avoid going out of screen
       //remove Mario from initial position
       $($squares[marioPos]).html('');
       $($squares[marioPos]).toggleClass('mario'); //toggle mario class on div
@@ -214,9 +222,8 @@ $(() => {
       $($squares[newPos]).html(mario);
       $($squares[newPos]).toggleClass('mario');
       marioPos = newPos;
-    }
-    else if (e.which === 39){ //right arrow
-      let newPos = Math.min(marioPos + 1, rightPos); // to avoid going out of screen
+    } else if (e.which === 39){ //right arrow
+      const newPos = Math.min(marioPos + 1, rightPos); // to avoid going out of screen
       //remove Mario from initial position
       $($squares[marioPos]).html('');
       $($squares[marioPos]).toggleClass('mario'); //toggle mario class on div
@@ -234,7 +241,7 @@ $(() => {
   //   }
   // }
 
-  //***********************LINK FUNCTIONS WITH DOM ELEMENTS*******************************
+  //***********************LINK FUNCTIONS WITH DOM ELEMENTS*****************************
 
   $middleSection.on('click',secondFrame);
   $goButton.on('click',gameStart);
