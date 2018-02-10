@@ -52,7 +52,8 @@ body {
 
           img{
 
-          }
+
+            }
         }
 
         &.bottomSection{
@@ -84,19 +85,22 @@ body {
           display: flex;
           justify-content: center;
           align-items: center;
-          //position: relative;
+          position: relative;
 
           // @-webkit-transition-property: all; //need to define when value is changed
           // @-webkit-transition-duration: 30s;
           // @-webkit-transition-timing-function: linear;
 
           img{
-            //position: absolute;
+            position: absolute;
             // @-webkit-transition-property: top;
             // @-webkit-transition-duration: 10s;
             // @-webkit-transition-timing-function: linear;
             // animation: moveDown 200ms linear; //duration of 200ms
 
+              &.marioLost{
+                animation: moveUpAndDown 3s linear;
+              }
           }
 
         }
@@ -108,7 +112,9 @@ body {
   }
 }
 
-// @-webkit-keyframes moveDown{
-//   from {top: 0px;}
-//   to {top: 38.5px;}
-// }
+@-webkit-keyframes moveUpAndDown{
+    0%  {top: 0;}
+    20%  {top: 0;}
+    50% {top: -300px;}
+    100% {top: 300px;}
+}

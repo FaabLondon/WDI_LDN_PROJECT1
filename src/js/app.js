@@ -4,7 +4,6 @@ $(() => {
   //****************************** Variables **********************************
   //DOM variables
   const $grid = $('.mainGrid');
-
   const $sections = $('section');
   const $topSection = $('.topSection');
   const $middleSection= $('.middleSection');
@@ -24,11 +23,13 @@ $(() => {
   let nbRows = 8;
   let marioPos = 136; //Mario initial position on all screens
   let nbCoins = 0; //initial number of coins
+  var timeouts = []; //will store all timeouts
 
   //assets for Marion, ennemies and bonuses
   let coin = '<img class="coin" src="/images/coin.png" alt="coin">';
   let ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
   let mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
+  let marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
 
   //calculates total number of squares in grid
   let totalNbSquares = nbColumns * nbRows;
@@ -59,14 +60,26 @@ $(() => {
 
   //displays second frame
   function secondFrame(){
+    $grid.hide();
+    $sections.show();
     //changes top section to Level X
     $topSection.text(`Level ${level}`);
     //changes middle section to Level number of life and add Mario pic
-    $middleSectionText.text(`   X   ${nbLives}`);
-    $marioIntro.show();
-    //changes bottom section to instruction
-    $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
-    $goButton.show();
+
+    if (nbLives > 0){
+      $middleSectionText.text(`   X   ${nbLives}`);
+      $marioIntro.show();
+      //changes bottom section to instruction
+      $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
+      $goButton.show();
+    } else {
+      $middleSectionText.text('GAME OVER');
+      $bottomSectionText.html('');
+      $goButton.hide();
+      setTimeout(() => {
+        firstFrame();
+      }, 2000);
+    }
   }
 
   //Frame to start game
@@ -75,6 +88,7 @@ $(() => {
     $grid.show();
     //hide the $sections
     $sections.hide();
+    //start level 1
     level1();
   }
 
@@ -127,46 +141,70 @@ $(() => {
     //loop to animate coin in the column
     for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
       //animate the element by making it appear and disappear from 1 square to the other
-      setTimeout(() => {
+      timeouts.push(setTimeout(() => {
         //set class 'type' on the div
         $($squares[i]).toggleClass(type);
-        //check for a win (Mario in the same div)
-        if (checkWinLose($($squares[i])) !== true){//if no win/lose then update div with element
+        //check for a hit (Mario or ennemy in the same div)
+        if (checkHit($($squares[i])) !== true){//if no win/lose then update div with element
           $($squares[i]).html(src);
         }
-      }, timeOutIncrement);
+      }, timeOutIncrement));
+
       timeOutIncrement = timeOutIncrement + incrTimeOut;
-      setTimeout(() => {
+      timeouts.push(setTimeout(() => {
         if ($($squares[i]).hasClass('mario') !== true){
           //do not not delete element image if mario is in the div
           $($squares[i]).html('');
         }
         //in any case toggle class 'type' on the div
         $($squares[i]).toggleClass(type);
-      }, timeOutIncrement);
+      }, timeOutIncrement));
     }
   }
 
-  function checkWinLose($sq){
+  function checkHit($sq){
     let score = 0;
+    //if we have Mario and a coin in the same div
     if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
       //increment nbCoins and update number of coins on screen
       nbCoins++;
-      //console.log($scoreSpan.text());
       $coinsSpan.text(nbCoins);
       score = `000${nbCoins * 100}`;
       $scoreSpan.text(score.substr(score.length - 5)); // to make sure length is alwasy 5 digit
       return true;
-    } else return false;
+    }
+    if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
+      //if we have Mario and an ennemy in the same div, decrease life and go back to frame 2
+      nbLives--;
+      //clear all timeouts in the game to stop it
+      for (let i = 0; i < timeouts.length; i++) {
+        clearTimeout(timeouts[i]);
+      }
+      // Mario losing scenario: animates Mario and reinitilaise game
+      MarioLosing();
+      //check if game over
+      return true;
+    }
   }
 
-  //***********************LINK FUNCTIONS WITH DOM ELEMENTS*******************************
+  function MarioLosing(){
+    //change picture
+    $($squares[marioPos]).html(marioLosing);
+    //make losing Marion jump up and then all the way down beyond game bottom edge
+    //see css animation
 
-  $middleSection.on('click',secondFrame);
-  $goButton.on('click',gameStart);
+    setTimeout(() => {
+      $($squares).html(''); //clear all animated elements from the grid
+      //toggle the element classes
+      $('.coin').toggleClass('coin');
+      $('.ennemy').toggleClass('ennemy');
+      $('.mario').toggleClass('mario');
+      secondFrame(); //and go back to frame2
+    }, 3000); //wait for the mario animation to finish
 
-  //Mario going left and right event
-  $(document).on('keydown', function(e) {
+  }
+
+  function animateMarioLeftRight(e) {
     if(e.which === 37){ //left arrow
       let newPos = Math.max(marioPos - 1, leftPos); // to avoid going out of screen
       //remove Mario from initial position
@@ -187,7 +225,21 @@ $(() => {
       $($squares[newPos]).toggleClass('mario');
       marioPos = newPos;
     }
-  });
+  }
+
+  // function checkGameOver(){
+  //   if(nbLives === 0){
+  //
+  //     }
+  //   }
+  // }
+
+  //***********************LINK FUNCTIONS WITH DOM ELEMENTS*******************************
+
+  $middleSection.on('click',secondFrame);
+  $goButton.on('click',gameStart);
+  $(document).on('keydown', animateMarioLeftRight); //Mario going left and right event
+
 
   //Call function to initialise first screen
   gridInit();
