@@ -80,7 +80,7 @@ body {
         .square{
           height: 75px;
           width: 75px;
-          background-color: pink;
+          //background-color: pink;
           //border: 1px black solid;
           display: flex;
           justify-content: center;
@@ -92,7 +92,7 @@ body {
           // @-webkit-transition-timing-function: linear;
 
           img{
-            position: absolute;
+            position: absolute; //so that Mario can move when hit by ennemy
             // @-webkit-transition-property: top;
             // @-webkit-transition-duration: 10s;
             // @-webkit-transition-timing-function: linear;

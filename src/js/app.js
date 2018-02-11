@@ -3,6 +3,7 @@ $(() => {
 
   //****************************** Variables **********************************
   //DOM variables
+  const $gameBoardContainer = $('.gameBoardContainer');
   const $grid = $('.mainGrid');
   const $sections = $('section');
   const $topSection = $('.topSection');
@@ -26,8 +27,6 @@ $(() => {
   let nbLives = 3; //initial number of lives
   const nbColumns = 19;
   const nbRows = 8;
-  let initialPos = 136; //Mario initial position on all screens
-  let marioPos = initialPos;
   let nbCoins = 0; //initial number of coins
   let timeouts = []; //will store all timeouts
   let globalScore = 0;
@@ -50,6 +49,10 @@ $(() => {
   //calculates the max left position and right position for Mario
   const leftPos = totalNbSquares - nbColumns; // to calculate depending on grid size
   const rightPos = totalNbSquares - 1; // to calculate depending on grid size
+
+  //mario initial location
+  const initialPos = totalNbSquares - nbColumns + 3 ; //Mario initial position on all screens
+  let marioPos = initialPos;
 
   //TO DO
   //make site responsive for ipad
@@ -126,6 +129,8 @@ $(() => {
     $($squares[initialPos]).html(mario);
     $($squares[initialPos]).addClass('mario');
     marioPos = initialPos;
+    //reactivate Mario moving on keydown
+    $(document).on('keydown', animateMarioLeftRight); //Mario going left and right event
     //start level 1
     level1();
   }
@@ -142,10 +147,14 @@ $(() => {
     //set speed for the level - Duration 60 second so 6000 ms
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    //change background picture
-    // ------------> still to do
+    //change background picture for that level
+    $gameBoardContainer.css({
+      backgroundImage: 'url(/images/backgroundLevel1.png)',
+      backgroundSize: 'contain'
+    });
+
     // Timer for level 1
-    let initialTime = 30;
+    const initialTime = 30;
 
     timer = initialTime;
     timerID = setInterval(() => {
@@ -158,7 +167,7 @@ $(() => {
     timeOutId = setTimeout(() => {
       clearInterval(timerID);
       timeUpFrame();
-    }, (initialTime +1) * 1000);
+    }, (initialTime + 1) * 1000);
 
 
     //Animate coins, ennemies and bonus
@@ -249,8 +258,14 @@ $(() => {
   function timeUpFrame(){
     $grid.hide();
     $sections.show();
+    //remove background picture
+    $gameBoardContainer.css({
+      backgroundImage: 'none'
+    });
     //remove Mario class - no need to remove the other elements as animations lapsed
     $('div .mario').removeClass('mario');
+    //removes event keydown on Mario to prevent Mario from moving
+    $(document).off('keydown');
 
     $middleSectionText.text(`Time's up! You caught ${nbCoins} coins! Well done!`); //how to make appear as a box on top of grid?
     $bottomSectionText.html('');
@@ -273,6 +288,8 @@ $(() => {
     clearInterval(timerID);
     //clear timeout to avoid going to time's up screen
     clearTimeout(timeOutId);
+    //desactivate Mario moving
+    $(document).off('keydown');
 
     //clear all timeouts (animation) in the game to stop them
     for (let i = 0; i < timeouts.length; i++) {
@@ -291,6 +308,11 @@ $(() => {
       $('div .ennemy').toggleClass('ennemy');
       $('div .mario').removeClass('mario');
 
+      //remove background picture
+      $gameBoardContainer.css({
+        backgroundImage: 'none'
+      });
+      
       secondFrame(); //and go back to frame2
     }, 3000); //wait for the mario animation to finish
 
@@ -325,11 +347,12 @@ $(() => {
   //   }
   // }
 
-  //***********************LINK FUNCTIONS WITH DOM ELEMENTS*****************************
+  //****************LINK FUNCTIONS WITH DOM ELEMENTS***********************
 
   $middleSection.on('click',secondFrame);
   $goButton.on('click',gameStart);
-  $(document).on('keydown', animateMarioLeftRight); //Mario going left and right event
+  //moved key event in game start function as it needs to be turned on evertytime we start a new game as it gets turned off() when Mario gets hit
+  //$(document).on('keydown', animateMarioLeftRight); //Mario going left and right event
 
   //Call function to initialise first screen
   gridInit();
