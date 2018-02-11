@@ -10,6 +10,7 @@ $(() => {
   const $bottomSection= $('.bottomSection');
   const $middleSectionText = $('.middleSection p');
   const $bottomSectionText = $('.bottomSection p');
+  const $levelSpan = $('.levelSpan');
   const $coinsSpan = $('.coinsSpan');
   const $scoreSpan = $('.scoreSpan');
   const $marioIntro = $('.marioIntro');
@@ -91,7 +92,8 @@ $(() => {
     //hide grid and show all sections
     $grid.hide();
     $sections.show();
-    //changes top section to Level X
+    //changes top section and score bar to Level X
+    $levelSpan.text(level);
     $topSection.text(`Level ${level}`);
     //changes middle section to Level number of life and add Mario pic
 
@@ -236,8 +238,6 @@ $(() => {
       //increment nbCoins and update number of coins on screen
       nbCoins++;
       $coinsSpan.text(nbCoins);
-      score = `000${globalScore + nbCoins}`;
-      $scoreSpan.text(score.substr(score.length - 5)); // to make sure length is alwasy 5 digit
       return true;
     }
     if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
@@ -257,7 +257,12 @@ $(() => {
     $marioIntro.hide();
     $goButton.hide();
     level++; //on to next level as time is up and no ennemy caught
-    globalScore = parseInt($scoreSpan.text()); //global score is updated only when time up and to next level
+
+    //update global score - updated only when time up and to next level
+    globalScore += nbCoins;
+    const scoreStr = `000${globalScore}`;
+    $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // to make sure length is alwasy 5 digit
+
     setTimeout(() => {
       secondFrame();
     }, 3000);
