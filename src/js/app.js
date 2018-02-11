@@ -25,7 +25,8 @@ $(() => {
   let nbLives = 3; //initial number of lives
   const nbColumns = 19;
   const nbRows = 8;
-  let marioPos = 136; //Mario initial position on all screens
+  let initialPos = 136; //Mario initial position on all screens
+  let marioPos = initialPos;
   let nbCoins = 0; //initial number of coins
   let timeouts = []; //will store all timeouts
   let globalScore = 0;
@@ -83,27 +84,11 @@ $(() => {
     $sections.show();
   }
 
-  function timeUpFrame(){
-    $grid.hide();
-    $sections.show();
-    $middleSectionText.text(`Time's up! You caught ${nbCoins} coins! Well done!`); //how to make appear as a box on top of grid?
-    $bottomSectionText.html('');
-    $marioIntro.hide();
-    $goButton.hide();
-    level++; //on to next level as time is up and no ennemy caught
-    globalScore = parseInt($scoreSpan.text()); //only when time up and to next level that global score is updated
-    setTimeout(() => {
-      secondFrame();
-    }, 3000);
-  }
-
-
   //displays second frame
   function secondFrame(){
-    nbCoins = 0; //initialise number of coins
-    //reset coin display
+    nbCoins = 0; //initialise number of coins and reset coin display
     $coinsSpan.text(nbCoins);
-    //
+    //hide grid and show all sections
     $grid.hide();
     $sections.show();
     //changes top section to Level X
@@ -113,7 +98,7 @@ $(() => {
     if (nbLives > 0){
       $middleSectionText.text(`   X   ${nbLives}`);
       $marioIntro.show();
-      //changes bottom section to instruction
+      //changes bottom section to instructions for next level
       $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
       $goButton.show();
     } else {
@@ -123,16 +108,22 @@ $(() => {
       $goButton.hide();
       setTimeout(() => {
         firstFrame();
-      }, 4000);
+      }, 5000);
     }
   }
 
   //Frame to start game
   function gameStart(){
+    //clear all pictures from the grid
+    $($squares).html('');
     //Show the grid
     $grid.show();
     //hide the $sections
     $sections.hide();
+    //position Mario on the grid always on 3rd square to the left
+    $($squares[initialPos]).html(mario);
+    $($squares[initialPos]).addClass('mario');
+    marioPos = initialPos;
     //start level 1
     level1();
   }
@@ -161,19 +152,13 @@ $(() => {
       }
     }, 1000);
 
-    //stops the timer after X seconds
-    //and says that time is up and nb coins caught
+    //stops the timer after initialTime seconds
     timeOutId = setTimeout(() => {
       clearInterval(timerID);
-      $('.coin').toggleClass('coin');
-      $('.ennemy').toggleClass('ennemy');
-      $('.mario').toggleClass('mario');
       timeUpFrame();
     }, (initialTime +1) * 1000);
 
-    //set Mario on 3rd square on the left
-    $($squares[marioPos]).html(mario);
-    $($squares[marioPos]).toggleClass('mario');
+
     //Animate coins, ennemies and bonus
     animateElement(0, 200, avgIncrTimeOut, coin, 'coin');
     animateElement(6, 1000, avgIncrTimeOut, coin, 'coin');
@@ -213,8 +198,6 @@ $(() => {
     animateElement(8, 29000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
     animateElement(12, 29000, avgIncrTimeOut, coin, 'coin');
     animateElement(15, 30000, avgIncrTimeOut, coin, 'coin');
-
-
   }
 
 
@@ -235,12 +218,13 @@ $(() => {
 
       timeOutIncrement = timeOutIncrement + incrTimeOut;
       timeouts.push(setTimeout(() => {
+        //remove class 'type' on the div
+        $($squares[i]).toggleClass(type);
         if ($($squares[i]).hasClass('mario') !== true){
-          //do not not delete element image if mario is in the div
+          //only delete element image if mario is not the div
           $($squares[i]).html('');
         }
-        //in any case toggle class 'type' on the div
-        $($squares[i]).toggleClass(type);
+
       }, timeOutIncrement));
     }
   }
@@ -252,38 +236,56 @@ $(() => {
       //increment nbCoins and update number of coins on screen
       nbCoins++;
       $coinsSpan.text(nbCoins);
-      score = `000${globalScore + nbCoins * 100}`;
+      score = `000${globalScore + nbCoins}`;
       $scoreSpan.text(score.substr(score.length - 5)); // to make sure length is alwasy 5 digit
       return true;
     }
     if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
-      //clear Timer
-      clearInterval(timerID);
-      clearTimeout(timeOutId);
-      //if we have Mario and an ennemy in the same div, decrease life and go back to frame 2
-      nbLives--;
-      //clear all timeouts in the game to stop it
-      for (let i = 0; i < timeouts.length; i++) {
-        clearTimeout(timeouts[i]);
-      }
-      // Mario losing scenario: animates Mario and reinitilaise game
       MarioLosing();
       return true;
     }
   }
 
+  function timeUpFrame(){
+    $grid.hide();
+    $sections.show();
+    //remove Mario class - no need to remove the other elements as animations lapsed
+    $('div .mario').removeClass('mario');
+
+    $middleSectionText.text(`Time's up! You caught ${nbCoins} coins! Well done!`); //how to make appear as a box on top of grid?
+    $bottomSectionText.html('');
+    $marioIntro.hide();
+    $goButton.hide();
+    level++; //on to next level as time is up and no ennemy caught
+    globalScore = parseInt($scoreSpan.text()); //global score is updated only when time up and to next level
+    setTimeout(() => {
+      secondFrame();
+    }, 3000);
+  }
+
   function MarioLosing(){
+    //clear Timer
+    clearInterval(timerID);
+    //clear timeout to avoid going to time's up screen
+    clearTimeout(timeOutId);
+
+    //clear all timeouts (animation) in the game to stop them
+    for (let i = 0; i < timeouts.length; i++) {
+      clearTimeout(timeouts[i]);
+    }
+
     //change picture
     $($squares[marioPos]).html(marioLosing);
-    //make losing Marion jump up and then all the way down beyond game bottom edge
-    //see css animation
+    //make losing Marion jump up and then all the way down beyond game bottom edge -see css animation
+
+    //decrement nb of lives
+    nbLives--;
 
     setTimeout(() => {
-      $($squares).html(''); //clear all animated elements from the grid
-      //toggle the element classes
-      $('.coin').toggleClass('coin');
-      $('.ennemy').toggleClass('ennemy');
-      $('.mario').toggleClass('mario');
+      $('div .coin').toggleClass('coin');
+      $('div .ennemy').toggleClass('ennemy');
+      $('div .mario').removeClass('mario');
+
       secondFrame(); //and go back to frame2
     }, 3000); //wait for the mario animation to finish
 
@@ -294,19 +296,19 @@ $(() => {
       const newPos = Math.max(marioPos - 1, leftPos); // to avoid going out of screen
       //remove Mario from initial position
       $($squares[marioPos]).html('');
-      $($squares[marioPos]).toggleClass('mario'); //toggle mario class on div
-      //set MArio in new position and toggle mario class
+      $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
+      //add Mario in new position and toggle mario class
       $($squares[newPos]).html(mario);
-      $($squares[newPos]).toggleClass('mario');
+      $($squares[newPos]).addClass('mario');
       marioPos = newPos;
     } else if (e.which === 39){ //right arrow
       const newPos = Math.min(marioPos + 1, rightPos); // to avoid going out of screen
       //remove Mario from initial position
       $($squares[marioPos]).html('');
-      $($squares[marioPos]).toggleClass('mario'); //toggle mario class on div
+      $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
       //set Mario in new position and toggle mario class
       $($squares[newPos]).html(mario);
-      $($squares[newPos]).toggleClass('mario');
+      $($squares[newPos]).addClass('mario');
       marioPos = newPos;
     }
   }
@@ -323,7 +325,6 @@ $(() => {
   $middleSection.on('click',secondFrame);
   $goButton.on('click',gameStart);
   $(document).on('keydown', animateMarioLeftRight); //Mario going left and right event
-
 
   //Call function to initialise first screen
   gridInit();
