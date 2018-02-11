@@ -20,7 +20,7 @@ $(() => {
   const $timer = $('.timer');
   const $eventAudio = $('.events');
   //const $backgroundAudio = $('.backgroundMusic');
-  const temp = 0;//need to commit again
+
   //Initial variables for game
   let timer = 0;
   let timerID = 0;
@@ -37,14 +37,15 @@ $(() => {
   //images and audio for Mario, ennemies and bonuses
   const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
   const ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
-  const mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
+  const marioRight = '<img class="mario" src="/images/littleMarioRight.png" alt="mario">';
+  const marioLeft = '<img class="mario" src="/images/littleMarioLeft.png" alt="mario">';
   const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
   const marioLosingSound = 'http://soundbible.com/mp3/Audience_Applause-Matthiew11-1206899159.mp3';
 
 
   //instructions per level
   const instructions = {
-    'Level 1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">',
+    'Level 1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">',
     'Level 2': 'Congratulations on finishing Level 1. Now let\'s try to ....'
   }
 
@@ -130,7 +131,7 @@ $(() => {
     //hide the $sections
     $sections.hide();
     //position Mario on the grid always on 3rd square to the left
-    $($squares[initialPos]).html(mario);
+    $($squares[initialPos]).html(marioRight);
     $($squares[initialPos]).addClass('mario');
     marioPos = initialPos;
     //reactivate Mario moving on keydown
@@ -139,13 +140,7 @@ $(() => {
     level1();
   }
 
-  //GAME PLAN LEVEL 1
-  //Each element is animated as follow:
-  //animateElement(column, InitialTimeOut, incrTimeOut, src)
-  // column: nb of the column where the element falls
-  // initialTimeOut: delay before fall
-  // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
-  // src: which ennemy, which gives image to use
+  //*************************GAME PLAN - LEVEL 1 *******************************
 
   function level1(){
     //set speed for the level - Duration 60 second so 6000 ms
@@ -173,6 +168,11 @@ $(() => {
       timeUpFrame();
     }, (initialTime + 1) * 1000);
 
+    //animateElement(column, InitialTimeOut, incrTimeOut, src)
+    // column: nb of the column where the element falls
+    // initialTimeOut: delay before fall
+    // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
+    // src: which ennemy, which gives image to use
 
     //Animate coins, ennemies and bonus
     animateElement(0, 200, avgIncrTimeOut, coin, 'coin');
@@ -324,13 +324,14 @@ $(() => {
   }
 
   function animateMarioLeftRight(e) {
+    //Note: I set a delay of 100ms before change in images
     if(e.which === 37){ //left arrow
       const newPos = Math.max(marioPos - 1, leftPos); // to avoid going out of screen
       //remove Mario from initial position
       $($squares[marioPos]).html('');
       $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
       //add Mario in new position and toggle mario class
-      $($squares[newPos]).html(mario);
+      $($squares[newPos]).html(marioLeft);
       $($squares[newPos]).addClass('mario');
       marioPos = newPos;
     } else if (e.which === 39){ //right arrow
@@ -339,7 +340,7 @@ $(() => {
       $($squares[marioPos]).html('');
       $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
       //set Mario in new position and toggle mario class
-      $($squares[newPos]).html(mario);
+      $($squares[newPos]).html(marioRight);
       $($squares[newPos]).addClass('mario');
       marioPos = newPos;
     }

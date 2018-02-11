@@ -96,20 +96,24 @@ body {
           align-items: center;
           position: relative;
 
-          // @-webkit-transition-property: all; //need to define when value is changed
-          // @-webkit-transition-duration: 30s;
-          // @-webkit-transition-timing-function: linear;
-
           img{
             position: absolute; //so that Mario can move when hit by ennemy
-            // @-webkit-transition-property: top;
-            // @-webkit-transition-duration: 10s;
-            // @-webkit-transition-timing-function: linear;
-            // animation: moveDown 200ms linear; //duration of 200ms
 
               &.marioLost{
                 animation: moveUpAndDown 3s linear;
               }
+
+              &.coin{
+                animation: moveDown 400ms linear;
+              }
+
+              &.ennemy{
+                animation: moveDown 200ms linear;
+              }
+
+              // &.mario{
+              //   animation: move 200ms linear;
+              // }
           }
 
         }
@@ -131,4 +135,10 @@ body {
 @-webkit-keyframes pulsating{
     0%  {color: white;}
     100% {color: black;}
+}
+
+@-webkit-keyframes moveDown{
+  0%  {top: -35px;}
+  50% {top: 0px;}
+  100% {top: 35px;}
 }
