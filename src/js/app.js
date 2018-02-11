@@ -20,7 +20,7 @@ $(() => {
   const $timer = $('.timer');
   const $eventAudio = $('.events');
   //const $backgroundAudio = $('.backgroundMusic');
-
+  const temp = 0;//need to commit again
   //Initial variables for game
   let timer = 0;
   let timerID = 0;
