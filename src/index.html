@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>WDI Project 1: JavaScript Game</title>
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/js/app.js" charset="utf-8"></script>
     <link rel="stylesheet" href="/css/style.css">
@@ -36,11 +37,21 @@
         </section>
         <section class="bottomSection">
           <p>Leaderboard</p>
-          <button class="goButton" style="display: none">Let's play!</button>
+          <div class="arrowButton" style="display: none">
+            <i class="fas fa-caret-right fa-sm"></i>
+            <button class="goButton">Let's play!</button>
+          </div>
         </section>
         <!-- For game and grid-->
         <div class="mainGrid">
         </div>
+        <audio class="events">
+          <source  src="" type="audio/mp3">
+        </audio>
+        <audio class="backgroundMusic">
+            <source src="" type="audio/mp3">
+        </audio>
+
       </main>
 
       <footer>

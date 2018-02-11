@@ -15,9 +15,11 @@ $(() => {
   const $coinsSpan = $('.coinsSpan');
   const $scoreSpan = $('.scoreSpan');
   const $marioIntro = $('.marioIntro');
-  const $goButton = $('.goButton');
+  const $arrowButton = $('.arrowButton');
   const $coin = $('.coin');
   const $timer = $('.timer');
+  const $eventAudio = $('.events');
+  //const $backgroundAudio = $('.backgroundMusic');
 
   //Initial variables for game
   let timer = 0;
@@ -32,11 +34,13 @@ $(() => {
   let globalScore = 0;
   let leaderBoard = {};
 
-  //assets for Mario, ennemies and bonuses
+  //images and audio for Mario, ennemies and bonuses
   const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
   const ennemyMushroom = '<img class="ennemy" src="/images/ennemyMushroom.png" alt="ennemy">';
   const mario = '<img class="mario" src="/images/littleMario.png" alt="mario">';
   const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
+  const marioLosingSound = 'http://soundbible.com/mp3/Audience_Applause-Matthiew11-1206899159.mp3';
+
 
   //instructions per level
   const instructions = {
@@ -105,12 +109,12 @@ $(() => {
       $marioIntro.show();
       //changes bottom section to instructions for next level
       $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
-      $goButton.show();
+      $arrowButton.show();
     } else {
       $marioIntro.hide();
       $middleSectionText.text('GAME OVER');
       $bottomSectionText.html('');
-      $goButton.hide();
+      $arrowButton.hide();
       setTimeout(() => {
         firstFrame();
       }, 5000);
@@ -241,7 +245,6 @@ $(() => {
   }
 
   function checkHit($sq){
-    let score = 0;
     //if we have Mario and a coin in the same div
     if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
       //increment nbCoins and update number of coins on screen
@@ -270,7 +273,7 @@ $(() => {
     $middleSectionText.text(`Time's up! You caught ${nbCoins} coins! Well done!`); //how to make appear as a box on top of grid?
     $bottomSectionText.html('');
     $marioIntro.hide();
-    $goButton.hide();
+    $arrowButton.hide();
     level++; //on to next level as time is up and no ennemy caught
 
     //update global score - updated only when time up and to next level
@@ -296,9 +299,12 @@ $(() => {
       clearTimeout(timeouts[i]);
     }
 
-    //change picture
-    $($squares[marioPos]).html(marioLosing);
     //make losing Marion jump up and then all the way down beyond game bottom edge -see css animation
+    $($squares[marioPos]).html(marioLosing);
+
+    //change audio
+    // $($('.events source')[0]).attr('src', marioLosingSound);
+    // $eventAudio[0].play(); // DOES NOT WORK
 
     //decrement nb of lives
     nbLives--;
@@ -312,7 +318,6 @@ $(() => {
       $gameBoardContainer.css({
         backgroundImage: 'none'
       });
-      
       secondFrame(); //and go back to frame2
     }, 3000); //wait for the mario animation to finish
 
@@ -340,17 +345,11 @@ $(() => {
     }
   }
 
-  // function checkGameOver(){
-  //   if(nbLives === 0){
-  //
-  //     }
-  //   }
-  // }
 
   //****************LINK FUNCTIONS WITH DOM ELEMENTS***********************
 
   $middleSection.on('click',secondFrame);
-  $goButton.on('click',gameStart);
+  $arrowButton.on('click',gameStart);
   //moved key event in game start function as it needs to be turned on evertytime we start a new game as it gets turned off() when Mario gets hit
   //$(document).on('keydown', animateMarioLeftRight); //Mario going left and right event
 

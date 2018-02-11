@@ -4,6 +4,7 @@ body {
   font-family: 'VT323', monospace;
   margin: 0 auto;
   height: 100vh;
+  font-size: 32px;
 
   .gameBoardContainer{
     width: 1440px;  // TO CHECK AGAIN
@@ -11,14 +12,13 @@ body {
     height: 100%;
 
     header{
-      font-size: 32px;
+
       margin: 30px 20px;
       display: flex;
       justify-content: space-between;
     }
 
     main{
-      font-size: 32px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -63,10 +63,19 @@ body {
           justify-content: center;
           align-items: center;
 
-          button{
-            // to style !
-          }
+          .arrowButton{
+            animation: pulsating 0.5s linear alternate infinite;
 
+            .goButton{
+              animation: pulsating 0.5s linear alternate infinite;
+              border: black;
+              background-color: black;
+              color: white;
+              font-family: 'VT323', monospace;
+              font-size: 32px;
+              outline:0;
+            }
+          }
         }
       }
 
@@ -117,4 +126,9 @@ body {
     20%  {top: 0;}
     50% {top: -300px;}
     100% {top: 300px;}
+}
+
+@-webkit-keyframes pulsating{
+    0%  {color: white;}
+    100% {color: black;}
 }
