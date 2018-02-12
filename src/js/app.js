@@ -19,7 +19,7 @@ $(() => {
   const $coin = $('.coin');
   const $timer = $('.timer');
   const $eventAudio = $('.events');
-  //const $backgroundAudio = $('.backgroundMusic');
+  const $backgroundAudio = $('.backgroundMusic');
 
   //Initial variables for game
   let timer = 0;
@@ -40,8 +40,10 @@ $(() => {
   const marioRight = '<img class="mario" src="/images/littleMarioRight.png" alt="mario">';
   const marioLeft = '<img class="mario" src="/images/littleMarioLeft.png" alt="mario">';
   const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
-  const marioLosingSound = 'http://soundbible.com/mp3/Audience_Applause-Matthiew11-1206899159.mp3';
-
+  const marioLosingSound = '/sounds/marioLosing.wav';
+  const coinCaught = '/sounds/marioCoinSound.mp3';
+  const gameOver = '/sounds/gameOver.wav';
+  const level1Sound = 'Level1.wav';
 
   //instructions per level
   const instructions = {
@@ -67,7 +69,7 @@ $(() => {
   function gridInit(){
     for (let i = 0; i < nbColumns; i++){
       for (let j = 0; j < nbRows; j++){
-        $grid.append($('<div></div>').addClass('square'));
+        $grid.append($('<div></div>').addClass(`square ${i} ${j}`));
       }
     }
   }
@@ -95,7 +97,11 @@ $(() => {
 
   //displays second frame
   function secondFrame(){
-    nbCoins = 0; //initialise number of coins and reset coin display
+    //update Global score - already done in
+    const scoreStr = `0000${globalScore}`;
+    $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is alwaus 5 digit
+    //initialise number of coins and reset coin display
+    nbCoins = 0;
     $coinsSpan.text(nbCoins);
     //hide grid and show all sections
     $grid.hide();
@@ -112,6 +118,10 @@ $(() => {
       $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
       $arrowButton.show();
     } else {
+      //change audio
+      $eventAudio.attr('src', gameOver);
+      $eventAudio.get(0).play();
+      //Change display
       $marioIntro.hide();
       $middleSectionText.text('GAME OVER');
       $bottomSectionText.html('');
@@ -128,6 +138,10 @@ $(() => {
     $($squares).html('');
     //Show the grid
     $grid.show();
+    //show global score
+    const scoreStr = `0000${globalScore}`;
+    $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is always 5 digit
+
     //hide the $sections
     $sections.hide();
     //position Mario on the grid always on 3rd square to the left
@@ -152,9 +166,12 @@ $(() => {
       backgroundSize: 'contain'
     });
 
+    //Set Music for Level 1
+    $eventAudio.attr('src', level1Sound);
+    $eventAudio.get(0).play();
+
     // Timer for level 1
     const initialTime = 30;
-
     timer = initialTime;
     timerID = setInterval(() => {
       if (timer >= 0){
@@ -166,7 +183,7 @@ $(() => {
     timeOutId = setTimeout(() => {
       clearInterval(timerID);
       timeUpFrame();
-    }, (initialTime + 1) * 1000);
+    }, (initialTime + 2) * 1000);
 
     //animateElement(column, InitialTimeOut, incrTimeOut, src)
     // column: nb of the column where the element falls
@@ -247,6 +264,10 @@ $(() => {
   function checkHit($sq){
     //if we have Mario and a coin in the same div
     if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
+      //change audio
+      $eventAudio.attr('src', coinCaught);
+      $eventAudio.get(0).play();
+      setTimeout(() => $eventAudio.get(0).pause(), 1000);
       //increment nbCoins and update number of coins on screen
       nbCoins++;
       $coinsSpan.text(nbCoins);
@@ -279,7 +300,7 @@ $(() => {
     //update global score - updated only when time up and to next level
     globalScore += nbCoins;
     const scoreStr = `000${globalScore}`;
-    $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // to make sure length is alwasy 5 digit
+    $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is always 5 digit
 
     setTimeout(() => {
       secondFrame();
@@ -303,8 +324,8 @@ $(() => {
     $($squares[marioPos]).html(marioLosing);
 
     //change audio
-    // $($('.events source')[0]).attr('src', marioLosingSound);
-    // $eventAudio[0].play(); // DOES NOT WORK
+    $eventAudio.attr('src', marioLosingSound);
+    $eventAudio.get(0).play();
 
     //decrement nb of lives
     nbLives--;
@@ -312,6 +333,7 @@ $(() => {
     setTimeout(() => {
       $('div .coin').toggleClass('coin');
       $('div .ennemy').toggleClass('ennemy');
+      $('div .mario').removeClass('marioLost');
       $('div .mario').removeClass('mario');
 
       //remove background picture
