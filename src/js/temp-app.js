@@ -249,8 +249,10 @@ $(() => {
         //set class 'type' on the div
         $($squares[i]).toggleClass(type);
         //check for a hit (Mario - ennemy/coin in same div) - only in the 2 bottom nbRows
-        if (checkHit($($squares[i]), timerId) !== true){
-          $($squares[i]).html(src); //if no hit then update div with element
+        if (i < (totalNbSquares - (2 * nbColumns))) {
+          $($squares[i]).html(src);
+        } else if (checkHit($($squares[i]),$($squares[i - nbColumns]), timerId) !== true){//if no hit then update div with element
+          $($squares[i]).html(src);
         }
       }, timeOutIncrement);
       timeouts.push(timerId);
@@ -268,10 +270,10 @@ $(() => {
     }
   }
 
-  function checkHit($sq, timerId = 0){
-    //if we have Mario and a coin in the same div - had to remove the case where Mario is jumping as it is already tested on Mario Jumping
-    if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true && $sq.hasClass('marioJumping') === false) {
-      //kills the animation of the coin or ennemy
+  function checkHit($sq, $sqUp, timerId){
+    //if we have Mario and a coin in the same div - also check for div above Mario in case he is jumping and element is dropping at the same time
+    if (($sq.hasClass('mario') === true || $sqUp.hasClass('mario') === true) && $sq.hasClass('coin') === true){
+      //kills the animation
       clearTimeout(timerId);
       //change audio when mario catches coin
       $eventAudio.attr('src', coinCaught);
@@ -282,8 +284,7 @@ $(() => {
       $coinsSpan.text(nbCoins);
       return true;
     }
-    //if we have Mario and a coin in the same div - had to remove the case where Mario is jumping as it is already tested on Mario Jumping
-    if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true && $sq.hasClass('marioJumping') === false) {
+    if (($sq.hasClass('mario') === true || $sqUp.hasClass('mario') === true) && $sq.hasClass('ennemy') === true) {
       //kills the animation
       clearTimeout(timerId);
       //call Mario losing function
@@ -322,10 +323,9 @@ $(() => {
       $('div .ennemy').toggleClass('ennemy');
       $('div .mario').removeClass('mario');
       $('div .marioLost').removeClass('marioLost');
-      $('div .marioJumping').removeClass('marioJumping');
       //and go back to frame2
       secondFrame();
-    }, 3000); //wait for the 3sec mario animation to finish
+    }, 3000); //wait for the mario animation to finish
   }
 
   function timeUpFrame(){
@@ -340,8 +340,6 @@ $(() => {
     });
     //remove Mario class - no need to remove the other elements as animations lapsed
     $('div .mario').removeClass('mario');
-    $('div .marioJumping').removeClass('marioJumping');
-
     //removes event keydown on Mario to prevent Mario from moving
     $(document).off('keydown');
 
@@ -376,24 +374,17 @@ $(() => {
       // adds Mario in new position up a div and toggle mario class
       $($squares[newPos]).html(currMarioPic);
       $($squares[newPos]).addClass('mario');
-      $($squares[newPos]).addClass('marioJumping');
-
-      marioPos = newPos; //jumping position
-
-      if (checkHit($($squares[marioPos]))) console.log('It is a hit');
-
+      marioPos = newPos; //jumpin position
       newPos = marioPos + nbColumns; //back to initial position
-
       //removes Mario from jump position
+
       setTimeout(() => {
         $($squares[marioPos]).html('');
         $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
-        $($squares[marioPos]).removeClass('marioJumping');
         // Mario back to initial position before jumping
         $($squares[newPos]).html(currMarioPic);
         $($squares[newPos]).addClass('mario');
         marioPos = newPos;
-        if (checkHit($($squares[newPos]))) console.log('It is a hit');
         $(document).on('keydown',marioJump); // reactivate jump
       },200);
     }
@@ -411,7 +402,6 @@ $(() => {
       $($squares[newPos]).html(marioLeft);
       $($squares[newPos]).addClass('mario');
       marioPos = newPos;
-      if (checkHit($($squares[newPos]))) console.log('It is a hit');
       //**** Mario going right ***************
     } else if (e.which === 39 && marioPos + 1 <= rightPos){ //right arrow + to avoid going out of screen
       newPos = marioPos + 1;
@@ -422,7 +412,6 @@ $(() => {
       $($squares[newPos]).html(marioRight);
       $($squares[newPos]).addClass('mario');
       marioPos = newPos;
-      if (checkHit($($squares[newPos]))) console.log('It is a hit');
     }
   }
 
