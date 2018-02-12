@@ -264,10 +264,10 @@ $(() => {
   function checkHit($sq){
     //if we have Mario and a coin in the same div
     if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
-      //change audio
+      //change audio when mario catches coin
       $eventAudio.attr('src', coinCaught);
       $eventAudio.get(0).play();
-      setTimeout(() => $eventAudio.get(0).pause(), 1000);
+      setTimeout(() => $eventAudio.get(0).pause(), 500); //had to reduce as when coins caught close one after another, no new sound was played
       //increment nbCoins and update number of coins on screen
       nbCoins++;
       $coinsSpan.text(nbCoins);
