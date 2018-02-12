@@ -78,6 +78,8 @@ $(() => {
 
   //displays 1st frame
   function firstFrame(){
+    //activate middle section click
+    $middleSection.on('click',secondFrame);
     //make the grid disappear
     $grid.hide();
     //initiliase content
@@ -87,18 +89,41 @@ $(() => {
       //check if in top 5, //add score to leaderBoard object
       $bottomSectionText.text('You made it to the Leader Board! Display Leaderboard'); //to update
     }
-
     //initialise Variables
     level = 1; //initial level
     globalScore = 0;
     nbLives = 3; //initial number of live
     timeouts = [];
+    //NOT WORKING clear all timers again as it doesn't seem to be doing it properly when Mario loses
+    //clear global Timer
+    //clearInterval(timerID);
+    //clear timeout to avoid going to time's up screen
+    //clearTimeout(timeOutId);
     //show all sections
     $sections.show();
   }
 
   //displays second frame
   function secondFrame(){
+    //remove background picture
+    $gameBoardContainer.css({
+      backgroundImage: 'none'
+    });
+    //clear all pictures from the grid
+    $($squares).html('');
+    //reset classes
+    $('div .coin').toggleClass('coin');
+    $('div .ennemy').toggleClass('ennemy');
+    $('div .mario').removeClass('mario');
+    $('div .marioLost').removeClass('marioLost');
+    $('div .marioJumping').removeClass('marioJumping');
+    //NOT WORKING clear all timers as apparently it is not working when Mario loses
+    //clearInterval(timerID);
+    //clear timeout to avoid going to time's up screen
+    //clearTimeout(timeOutId);
+
+    //desactivate on click event for middle sections
+    $middleSection.off('click',secondFrame);
     //update Global score - already done in
     const scoreStr = `0000${globalScore}`;
     $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is alwaus 5 digit
@@ -119,10 +144,11 @@ $(() => {
       //changes bottom section to instructions for next level
       $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
       $arrowButton.show();
-    } else {
+    } else { //Game Over
       //change audio
-      $eventAudio.attr('src', gameOver);
-      $eventAudio.get(0).play();
+      $backgroundAudio.get(0).pause();
+      $backgroundAudio.attr('src', gameOver);
+      $backgroundAudio.get(0).play();
       //Change display
       $marioIntro.hide();
       $middleSectionText.text('GAME OVER');
@@ -130,14 +156,12 @@ $(() => {
       $arrowButton.hide();
       setTimeout(() => {
         firstFrame();
-      }, 5000);
+      }, 3000);
     }
   }
 
   //Frame to start game
   function gameStart(){
-    //clear all pictures from the grid
-    $($squares).html('');
     //Show the grid
     $grid.show();
     //show global score
@@ -151,10 +175,10 @@ $(() => {
     $($squares[marioPos]).html(marioRight);
     $($squares[marioPos]).addClass('mario');
 
+    $(document).off('keydown'); // to make sure all keydown events are off before creating new ones - This is also done in another fucntion but apparently setting some events off() are not seen globally!!
     //reactivate Mario moving on keydown
     $(document).on('keydown', animateMario); //Mario going left, right and up
     $(document).on('keydown', marioJump); //Mario jumping
-
     //start level 1
     level1();
   }
@@ -178,17 +202,23 @@ $(() => {
     // Timer for level 1
     const initialTime = 30;
     timer = initialTime;
+
+    console.log(`Global timer ${timer}`);
+
     timerID = setInterval(() => {
       if (timer >= 0){
         $timer.text(`Time:${timer--}`);
       }
     }, 1000);
+    console.log(`timerID ${timerID}`);
 
     //stops the timer after initialTime seconds
     timeOutId = setTimeout(() => {
       clearInterval(timerID);
+      console.log(`timerID ${timerID}`);
       timeUpFrame();
     }, (initialTime + 2) * 1000);
+    console.log(`timeoutID ${timeOutId}`);
 
     //animateElement(column, InitialTimeOut, incrTimeOut, src)
     // column: nb of the column where the element falls
@@ -239,40 +269,40 @@ $(() => {
 
 
   function animateElement(column, InitialTimeOut, incrTimeOut, src, type){
-    let timerId = 0;
+    let timerIdlocal = 0;
     //initialise timeout
     let timeOutIncrement = InitialTimeOut;
     //loop to animate coin in the column
     for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
       //animate the element by making it appear and disappear from 1 square to the other
-      timerId = setTimeout(() => {
-        //set class 'type' on the div
-        $($squares[i]).toggleClass(type);
+      timerIdlocal = setTimeout(() => {
+        //set class 'type' on the div if type not there
+        if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type);
         //check for a hit (Mario - ennemy/coin in same div) - only in the 2 bottom nbRows
-        if (checkHit($($squares[i]), timerId) !== true){
+        if (checkHit($($squares[i]), timerIdlocal) !== true){
           $($squares[i]).html(src); //if no hit then update div with element
         }
       }, timeOutIncrement);
-      timeouts.push(timerId);
+      timeouts.push(timerIdlocal);
 
       timeOutIncrement = timeOutIncrement + incrTimeOut;
       timeouts.push(setTimeout(() => {
         //check that mario doesn't get replaced by coin or ennemy
-        if ($($squares[i]).hasClass('mario') !== true) {
+        if ($($squares[i]).hasClass('mario') === false) {
           //only delete element image if mario is not in the div, otherwise would delete mario
           $($squares[i]).html('');
         }
         //remove class 'type' on the div
-        $($squares[i]).toggleClass(type);
+        if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type);
       }, timeOutIncrement));
     }
   }
 
-  function checkHit($sq, timerId = 0){
-    //if we have Mario and a coin in the same div - had to remove the case where Mario is jumping as it is already tested on Mario Jumping
-    if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true && $sq.hasClass('marioJumping') === false) {
+  function checkHit($sq, timerIdlocal = 0){
+    //if we have Mario and a coin in the same div - had to remove the case where Mario is jumping as it is already tested on Mario Jumping and on the coin animation so was counting coins twice...
+    if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){ // && $sq.hasClass('marioJumping') === false) {
       //kills the animation of the coin or ennemy
-      clearTimeout(timerId);
+      clearTimeout(timerIdlocal);
       //change audio when mario catches coin
       $eventAudio.attr('src', coinCaught);
       $eventAudio.get(0).play();
@@ -282,10 +312,10 @@ $(() => {
       $coinsSpan.text(nbCoins);
       return true;
     }
-    //if we have Mario and a coin in the same div - had to remove the case where Mario is jumping as it is already tested on Mario Jumping
-    if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true && $sq.hasClass('marioJumping') === false) {
+    //if we have Mario and a coin in the same div - I keep the case where Mario is jumping as I want to test both on Mario jumping and on the ennemy animation if a match
+    if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
       //kills the animation
-      clearTimeout(timerId);
+      clearTimeout(timerIdlocal);
       //call Mario losing function
       MarioLosing();
       return true;
@@ -293,10 +323,13 @@ $(() => {
   }
 
   function MarioLosing(){
-    //clear Timer
-    clearInterval(timerID);
+    //clear global Timer
+    console.log(`clearing timerID in MarioLosing ${timerID}`);
+    clearInterval(timerID); // does not seem to work
     //clear timeout to avoid going to time's up screen
-    clearTimeout(timeOutId);
+    console.log(`clearing timeout ID in MarioLosing ${timeOutId}`);
+    clearTimeout(timeOutId);  // does not seem to work
+    timer = 0; //re-initialise global timer
     //desactivate Mario moving on all keydown
     $(document).off('keydown');
     //clear all timeouts (animation) in the game to stop them
@@ -314,15 +347,11 @@ $(() => {
     nbLives--;
 
     setTimeout(() => {
-      //remove background picture
-      $gameBoardContainer.css({
-        backgroundImage: 'none'
-      });
-      $('div .coin').toggleClass('coin');
-      $('div .ennemy').toggleClass('ennemy');
-      $('div .mario').removeClass('mario');
-      $('div .marioLost').removeClass('marioLost');
-      $('div .marioJumping').removeClass('marioJumping');
+      // $('div .coin').toggleClass('coin');
+      // $('div .ennemy').toggleClass('ennemy');
+      // $('div .mario').removeClass('mario');
+      // $('div .marioLost').removeClass('marioLost');
+      // $('div .marioJumping').removeClass('marioJumping');
       //and go back to frame2
       secondFrame();
     }, 3000); //wait for the 3sec mario animation to finish
@@ -339,8 +368,8 @@ $(() => {
       backgroundImage: 'none'
     });
     //remove Mario class - no need to remove the other elements as animations lapsed
-    $('div .mario').removeClass('mario');
-    $('div .marioJumping').removeClass('marioJumping');
+    // $('div .mario').removeClass('mario');
+    // $('div .marioJumping').removeClass('marioJumping');
 
     //removes event keydown on Mario to prevent Mario from moving
     $(document).off('keydown');
@@ -365,7 +394,7 @@ $(() => {
     let newPos = 0;
     //**** Mario jumping ***************
     if(e.which === 38){
-      $(document).off('keydown',marioJump); //desactivate jump to avoid user jumping even higher
+      $(document).off('keydown'); //desactivate jump to avoid user jumping even higher
       //38 is upArrow to make mario jump up
       newPos = marioPos - nbColumns;
       //get current Mario image
@@ -377,10 +406,8 @@ $(() => {
       $($squares[newPos]).html(currMarioPic);
       $($squares[newPos]).addClass('mario');
       $($squares[newPos]).addClass('marioJumping');
-
       marioPos = newPos; //jumping position
-
-      if (checkHit($($squares[marioPos]))) console.log('It is a hit');
+      //if (checkHit($($squares[marioPos]))) console.log('It is a hit'); // don;t check there as double count of coin
 
       newPos = marioPos + nbColumns; //back to initial position
 
@@ -393,8 +420,10 @@ $(() => {
         $($squares[newPos]).html(currMarioPic);
         $($squares[newPos]).addClass('mario');
         marioPos = newPos;
-        if (checkHit($($squares[newPos]))) console.log('It is a hit');
-        $(document).on('keydown',marioJump); // reactivate jump
+        if (checkHit($($squares[marioPos]))) console.log('It is a hit');
+        //reactivate Mario moving on keydown
+        $(document).on('keydown', animateMario); //Mario going left, right and up
+        $(document).on('keydown', marioJump); //Mario jumping
       },200);
     }
   }
@@ -411,7 +440,7 @@ $(() => {
       $($squares[newPos]).html(marioLeft);
       $($squares[newPos]).addClass('mario');
       marioPos = newPos;
-      if (checkHit($($squares[newPos]))) console.log('It is a hit');
+      if (checkHit($($squares[marioPos]))) console.log('It is a hit');
       //**** Mario going right ***************
     } else if (e.which === 39 && marioPos + 1 <= rightPos){ //right arrow + to avoid going out of screen
       newPos = marioPos + 1;
@@ -422,20 +451,21 @@ $(() => {
       $($squares[newPos]).html(marioRight);
       $($squares[newPos]).addClass('mario');
       marioPos = newPos;
-      if (checkHit($($squares[newPos]))) console.log('It is a hit');
+      if (checkHit($($squares[marioPos]))) console.log('It is a hit');
     }
   }
 
 
   //****************LINK FUNCTIONS WITH DOM ELEMENTS***********************
 
-  $middleSection.on('click',secondFrame);
-  $arrowButton.on('click',gameStart);
+  //$middleSection.on('click',secondFrame);
+  $arrowButton.on('click',gameStart); //When I do this in a function like frame 1 or frame 2, several events are created aafter a gameover and do not get cleared properly and as a result several gamestart and I get several timers that intereact with each other!!
   //moved key event in game start function as it needs to be turned on evertytime we start a new game as it gets turned off() when Mario gets hit
-  //$(document).on('keydown', animateMario); //Mario going left and right event
+  //$(document).on('keydown', animateMario); //Mario going left, right and up event
 
   //Call function to initialise first screen
   gridInit();
+  //activate button "let's play"
   const $squares = $('.square'); //Is it ok to declare here? as if I declare with other variables the grid is not initialised
   firstFrame();
   //gameStart();
