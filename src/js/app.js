@@ -26,6 +26,7 @@ $(() => {
   let timer = 0;
   let timerID = 0;
   let timeOutId = 0;
+  let timeOutId2 = 0;
   let level = 1; //initial level
   let nbLives = 3; //initial number of lives
   const nbColumns = 19;
@@ -321,6 +322,8 @@ $(() => {
     clearInterval(timerID);
     //clear timeout to avoid going to time's up screen
     clearTimeout(timeOutId);
+    //cleat timeout of Mario jumping
+    clearTimeout(timeOutId2);
     timer = 0; //re-initialise global timer
     //desactivate Mario moving on all keydown
     $(document).off('keydown');
@@ -375,7 +378,7 @@ $(() => {
 
   function marioJump(e) {
     let newPos = 0;
-    //**** Mario jumping ************************************************
+    //************************* Mario jumping ************************************************
     if(e.which === 38){
       $(document).off('keydown'); //desactivate jump to avoid user jumping even higher
       //38 is upArrow to make mario jump up
@@ -395,7 +398,7 @@ $(() => {
       newPos = marioPos + nbColumns; //back to initial position
 
       //removes Mario from jump position
-      setTimeout(() => {
+      timeOutId2 = setTimeout(() => {
         $($squares[marioPos]).html('');
         $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
         //$($squares[marioPos]).removeClass('marioJumping');
