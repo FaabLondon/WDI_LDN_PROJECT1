@@ -295,8 +295,10 @@ $(() => {
     //if we have Mario and a coin in the same div -
     //PROBLEM with JUMPING as check for a hit when jumping and here as part of the coin/ennemy animation so coin //might be counted twice or Marion considered as hit twice by ennemy so loses 2 lives
     if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
-      //kills the animation of the coin or ennemy
+      //kills the animation of the coin
       clearTimeout(timerIdlocal);
+      //removes coin class - to avoid double counting by Mario jumping and coin animation
+      $sq.removeClass('coin');
       //change audio when mario catches coin
       $eventAudio.attr('src', coinCaught);
       $eventAudio.get(0).play();
@@ -308,8 +310,10 @@ $(() => {
     }
     //if we have Mario and a coin in the same div - I keep the case where Mario is jumping as I want to test both on Mario jumping and on the ennemy animation if a match
     if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
-      //kills the animation
+      //kills the animation of the ennemy
       clearTimeout(timerIdlocal);
+      //removes coin class - to avoid double counting by Mario jumping and coin animation
+      $sq.removeClass('ennemy');
       //call Mario losing function
       MarioLosing();
       return true;
