@@ -43,7 +43,7 @@ $(() => {
   const marioLosingSound = '/sounds/marioLosing.wav';
   const coinCaught = '/sounds/marioCoinSound.mp3';
   const gameOver = '/sounds/gameOver.wav';
-  const level1Sound = 'Level1.wav';
+  const level1Sound = '/sounds/Level1.wav';
 
   //instructions per level
   const instructions = {
@@ -167,8 +167,8 @@ $(() => {
     });
 
     //Set Music for Level 1
-    $eventAudio.attr('src', level1Sound);
-    $eventAudio.get(0).play();
+    $backgroundAudio.attr('src', level1Sound);
+    $backgroundAudio.get(0).play();
 
     // Timer for level 1
     const initialTime = 30;
@@ -280,6 +280,9 @@ $(() => {
   }
 
   function timeUpFrame(){
+    //stop playing level Music
+    $backgroundAudio.get(0).pause();
+    //
     $grid.hide();
     $sections.show();
     //remove background picture
@@ -323,6 +326,9 @@ $(() => {
     //make losing Marion jump up and then all the way down beyond game bottom edge -see css animation
     $($squares[marioPos]).html(marioLosing);
 
+    //stop playing level Music
+    $backgroundAudio.get(0).pause();
+
     //change audio
     $eventAudio.attr('src', marioLosingSound);
     $eventAudio.get(0).play();
@@ -340,13 +346,17 @@ $(() => {
       $gameBoardContainer.css({
         backgroundImage: 'none'
       });
-      secondFrame(); //and go back to frame2
+
+      //and go back to frame2
+      secondFrame();
     }, 3000); //wait for the mario animation to finish
 
   }
 
   function animateMarioLeftRight(e) {
-    //Note: I set a delay of 100ms before change in images
+    if(e.which === 32){
+      console.log('space to jump');
+    }
     if(e.which === 37){ //left arrow
       const newPos = Math.max(marioPos - 1, leftPos); // to avoid going out of screen
       //remove Mario from initial position
