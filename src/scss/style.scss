@@ -46,15 +46,20 @@ body {
           align-items: center;
           text-align: center;
 
-          p{
-            //margin-left: 20px;
-            //text-align: center;
+          .animate{
+            animation: pulsating 0.5s linear alternate infinite;
           }
 
-          img{
+          p{
+            padding: 0 10px;
 
-
+            &.animate{
+              animation: pulsating 0.5s linear alternate infinite;
             }
+
+
+          }
+
         }
 
         &.bottomSection{

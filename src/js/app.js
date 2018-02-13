@@ -16,6 +16,7 @@ $(() => {
   const $scoreSpan = $('.scoreSpan');
   const $marioIntro = $('.marioIntro');
   const $arrowButton = $('.arrowButton');
+  const $arrow = $('.arrow');
   const $coin = $('.coin');
   const $timer = $('.timer');
   const $eventAudio = $('.events');
@@ -28,6 +29,9 @@ $(() => {
   let timeOutId = 0;
   let timeOutId2 = 0;
   let level = 1; //initial level
+  const levels = {
+    1: level1,
+    2: level2};
   let nbLives = 3; //initial number of lives
   const nbColumns = 19;
   const nbRows = 8;
@@ -85,6 +89,7 @@ $(() => {
     $grid.hide();
     //initiliase content
     $topSection.text('Welcome to Mario Coin Quest!');
+    $middleSectionText.addClass('animate');
     $middleSectionText.text('1 Player Game');
     if (globalScore > 0){
       //check if in top 5, //add score to leaderBoard object
@@ -98,8 +103,12 @@ $(() => {
     $sections.show();
   }
 
-  //displays second frame
+
+  //***************************displays second frame*********************************
   function secondFrame(){
+    //hide arrow
+    $arrow.hide();
+    $middleSectionText.removeClass('animate');
     //remove background picture
     $gameBoardContainer.css({
       backgroundImage: 'none'
@@ -175,8 +184,8 @@ $(() => {
     //reactivate Mario moving on keydown
     $(document).on('keydown', animateMario); //Mario going left, right and up
     $(document).on('keydown', marioJump); //Mario jumping
-    //start level 1
-    level1();
+    //start current level
+    levels[level]();
   }
 
   //*************************GAME PLAN - LEVEL 1 *******************************
@@ -191,11 +200,91 @@ $(() => {
       backgroundSize: 'contain'
     });
 
-    //Set Music for Level 1
+    //Set Music for that Level
     $backgroundAudio.attr('src', level1Sound);
     $backgroundAudio.get(0).play();
 
-    // Timer for level 1
+    // Timer for that level
+    const initialTime = 30;
+    timer = initialTime;
+
+    timerID = setInterval(() => {
+      if (timer >= 0){
+        $timer.text(`Time:${timer--}`);
+      }
+    }, 1000);
+
+    //stops the timer after initialTime seconds
+    timeOutId = setTimeout(() => {
+      clearInterval(timerID);
+      timeUpFrame();
+    }, (initialTime + 2) * 1000);
+
+    //animateElement(column, InitialTimeOut, incrTimeOut, src)
+    // column: nb of the column where the element falls
+    // initialTimeOut: delay before fall
+    // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
+    // src: which ennemy, which gives image to use
+
+    //Animate coins, ennemies and bonus
+    animateElement(0, 200, avgIncrTimeOut, coin, 'coin');
+    animateElement(6, 1000, avgIncrTimeOut, coin, 'coin');
+    animateElement(5, 2000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(9, 3000, avgIncrTimeOut, coin, 'coin');
+    animateElement(13, 4000, avgIncrTimeOut, coin, 'coin');
+    animateElement(6, 5000, avgIncrTimeOut, coin, 'coin');
+    animateElement(9, 6000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(15, 7000, avgIncrTimeOut, coin, 'coin');
+    animateElement(11, 8000, avgIncrTimeOut, coin, 'coin');
+    animateElement(3, 9000, avgIncrTimeOut, coin, 'coin');
+    animateElement(7, 9000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(17, 10000, avgIncrTimeOut, coin, 'coin');
+    animateElement(12, 12000, avgIncrTimeOut, coin, 'coin');
+    animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(3, 13000, avgIncrTimeOut, coin, 'coin');
+    animateElement(19, 14000, avgIncrTimeOut, coin, 'coin');
+    animateElement(10, 15000, avgIncrTimeOut, coin, 'coin');
+    animateElement(18, 15000, avgIncrTimeOut, coin, 'coin');
+    animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(4, 16000, avgIncrTimeOut, coin, 'coin');
+    animateElement(8, 17000, avgIncrTimeOut, coin, 'coin');
+    animateElement(19, 18000, avgIncrTimeOut, coin, 'coin');
+    animateElement(9, 19000, avgIncrTimeOut, coin, 'coin');
+    animateElement(15, 20000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(9, 21000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(4, 21000, avgIncrTimeOut, coin, 'coin');
+    animateElement(12, 22000, avgIncrTimeOut, coin, 'coin');
+    animateElement(16, 23000, avgIncrTimeOut, coin, 'coin');
+    animateElement(8, 24000, avgIncrTimeOut, coin, 'coin');
+    animateElement(7, 26000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(17, 26000, avgIncrTimeOut, coin, 'coin');
+    animateElement(11, 27000, avgIncrTimeOut, coin, 'coin');
+    animateElement(19, 27000, avgIncrTimeOut, coin, 'coin');
+    animateElement(0, 28000, avgIncrTimeOut, coin, 'coin');
+    animateElement(5, 28000, avgIncrTimeOut, coin, 'coin');
+    animateElement(8, 29000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
+    animateElement(12, 29000, avgIncrTimeOut, coin, 'coin');
+    animateElement(15, 30000, avgIncrTimeOut, coin, 'coin');
+  }
+
+  //*************************GAME PLAN - LEVEL 2 *******************************
+  //now we have shell sliding left and right during the whole level
+
+  function level2(){
+    //set speed for the level - Duration 60 second so 6000 ms
+    const avgIncrTimeOut = 400;
+    const rapidIncrTimeOut = 200;
+    //change background picture for that level
+    $gameBoardContainer.css({
+      backgroundImage: 'url(/images/backgroundLevel1.png)',
+      backgroundSize: 'contain'
+    });
+
+    //Set Music for Level
+    $backgroundAudio.attr('src', level1Sound);
+    $backgroundAudio.get(0).play();
+
+    // Timer for level
     const initialTime = 30;
     timer = initialTime;
 
@@ -293,7 +382,7 @@ $(() => {
 
   function checkHit($sq, timerIdlocal = 0){
     //if we have Mario and a coin in the same div -
-    //PROBLEM with JUMPING as check for a hit when jumping and here as part of the coin/ennemy animation so coin //might be counted twice or Marion considered as hit twice by ennemy so loses 2 lives
+    //had PROBLEM with JUMPING as check for a hit when jumping and here as part of the coin/ennemy animation
     if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
       //kills the animation of the coin
       clearTimeout(timerIdlocal);
@@ -308,7 +397,7 @@ $(() => {
       $coinsSpan.text(nbCoins);
       return true;
     }
-    //if we have Mario and a coin in the same div - I keep the case where Mario is jumping as I want to test both on Mario jumping and on the ennemy animation if a match
+    //if we have Mario and a coin in the same div
     if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
       //kills the animation of the ennemy
       clearTimeout(timerIdlocal);
