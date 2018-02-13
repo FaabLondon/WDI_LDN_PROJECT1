@@ -112,8 +112,12 @@ body {
                 animation: moveDown 400ms linear;
               }
 
-              &.ennemy{
+              &.ennemy.mushroom{
                 animation: moveDown 200ms linear;
+              }
+
+              &ennemy.shell{
+                //animation: moveDown 200ms linear;
               }
 
               // &.mario{
