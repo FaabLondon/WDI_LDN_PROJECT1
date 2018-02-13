@@ -49,7 +49,6 @@ $(() => {
   const marioLosingSound = '/sounds/marioLosing.wav';
   const coinCaught = '/sounds/marioCoinSound.mp3';
   const gameOver = '/sounds/gameOver.wav';
-  const level1Sound = '/sounds/Level1.wav';
 
   //instructions per level
   const instructions = {
@@ -191,23 +190,23 @@ $(() => {
   //*************************GAME PLAN - LEVEL 1 *******************************
 
   function level1(){
-    //set speed for the level - Duration 60 second so 6000 ms
+    //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
+    const initialTime = 30;
+
     //change background picture for that level
     $gameBoardContainer.css({
       backgroundImage: 'url(/images/backgroundLevel1.png)',
       backgroundSize: 'contain'
     });
 
-    //Set Music for that Level
-    $backgroundAudio.attr('src', level1Sound);
+    //Set Music for the Level
+    $backgroundAudio.attr('src', `/sounds/Level${level}.wav`);
     $backgroundAudio.get(0).play();
 
-    // Timer for that level
-    const initialTime = 30;
+    // Timer for the level
     timer = initialTime;
-
     timerID = setInterval(() => {
       if (timer >= 0){
         $timer.text(`Time:${timer--}`);
@@ -219,12 +218,6 @@ $(() => {
       clearInterval(timerID);
       timeUpFrame();
     }, (initialTime + 2) * 1000);
-
-    //animateElement(column, InitialTimeOut, incrTimeOut, src)
-    // column: nb of the column where the element falls
-    // initialTimeOut: delay before fall
-    // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
-    // src: which ennemy, which gives image to use
 
     //Animate coins, ennemies and bonus
     animateElement(0, 200, avgIncrTimeOut, coin, 'coin');
@@ -268,85 +261,15 @@ $(() => {
   }
 
   //*************************GAME PLAN - LEVEL 2 *******************************
-  //now we have shell sliding left and right during the whole level
+  function level2(){}
 
-  function level2(){
-    //set speed for the level - Duration 60 second so 6000 ms
-    const avgIncrTimeOut = 400;
-    const rapidIncrTimeOut = 200;
-    //change background picture for that level
-    $gameBoardContainer.css({
-      backgroundImage: 'url(/images/backgroundLevel1.png)',
-      backgroundSize: 'contain'
-    });
 
-    //Set Music for Level
-    $backgroundAudio.attr('src', level1Sound);
-    $backgroundAudio.get(0).play();
-
-    // Timer for level
-    const initialTime = 30;
-    timer = initialTime;
-
-    timerID = setInterval(() => {
-      if (timer >= 0){
-        $timer.text(`Time:${timer--}`);
-      }
-    }, 1000);
-
-    //stops the timer after initialTime seconds
-    timeOutId = setTimeout(() => {
-      clearInterval(timerID);
-      timeUpFrame();
-    }, (initialTime + 2) * 1000);
-
-    //animateElement(column, InitialTimeOut, incrTimeOut, src)
-    // column: nb of the column where the element falls
-    // initialTimeOut: delay before fall
-    // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
-    // src: which ennemy, which gives image to use
-
-    //Animate coins, ennemies and bonus
-    animateElement(0, 200, avgIncrTimeOut, coin, 'coin');
-    animateElement(6, 1000, avgIncrTimeOut, coin, 'coin');
-    animateElement(5, 2000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(9, 3000, avgIncrTimeOut, coin, 'coin');
-    animateElement(13, 4000, avgIncrTimeOut, coin, 'coin');
-    animateElement(6, 5000, avgIncrTimeOut, coin, 'coin');
-    animateElement(9, 6000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(15, 7000, avgIncrTimeOut, coin, 'coin');
-    animateElement(11, 8000, avgIncrTimeOut, coin, 'coin');
-    animateElement(3, 9000, avgIncrTimeOut, coin, 'coin');
-    animateElement(7, 9000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(17, 10000, avgIncrTimeOut, coin, 'coin');
-    animateElement(12, 12000, avgIncrTimeOut, coin, 'coin');
-    animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(3, 13000, avgIncrTimeOut, coin, 'coin');
-    animateElement(19, 14000, avgIncrTimeOut, coin, 'coin');
-    animateElement(10, 15000, avgIncrTimeOut, coin, 'coin');
-    animateElement(18, 15000, avgIncrTimeOut, coin, 'coin');
-    animateElement(15, 12000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(4, 16000, avgIncrTimeOut, coin, 'coin');
-    animateElement(8, 17000, avgIncrTimeOut, coin, 'coin');
-    animateElement(19, 18000, avgIncrTimeOut, coin, 'coin');
-    animateElement(9, 19000, avgIncrTimeOut, coin, 'coin');
-    animateElement(15, 20000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(9, 21000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(4, 21000, avgIncrTimeOut, coin, 'coin');
-    animateElement(12, 22000, avgIncrTimeOut, coin, 'coin');
-    animateElement(16, 23000, avgIncrTimeOut, coin, 'coin');
-    animateElement(8, 24000, avgIncrTimeOut, coin, 'coin');
-    animateElement(7, 26000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(17, 26000, avgIncrTimeOut, coin, 'coin');
-    animateElement(11, 27000, avgIncrTimeOut, coin, 'coin');
-    animateElement(19, 27000, avgIncrTimeOut, coin, 'coin');
-    animateElement(0, 28000, avgIncrTimeOut, coin, 'coin');
-    animateElement(5, 28000, avgIncrTimeOut, coin, 'coin');
-    animateElement(8, 29000, rapidIncrTimeOut, ennemyMushroom, 'ennemy');
-    animateElement(12, 29000, avgIncrTimeOut, coin, 'coin');
-    animateElement(15, 30000, avgIncrTimeOut, coin, 'coin');
-  }
-
+  //***************************** ANIMATE ELEMENT *******************************
+  //animateElement(column, InitialTimeOut, incrTimeOut, src)
+  // column: nb of the column where the element falls
+  // initialTimeOut: delay before fall
+  // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
+  // src: which ennemy, which gives image to use
 
   function animateElement(column, InitialTimeOut, incrTimeOut, src, type){
     let timerIdlocal = 0;
