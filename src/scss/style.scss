@@ -125,7 +125,7 @@ body {
                   animation: moveDown 400ms linear;
                 }
 
-                &.ennemy.mushroom{
+                &.ennemy.mushroom, &.ennemy.flying{
                   animation: moveDown 200ms linear;
                 }
 
