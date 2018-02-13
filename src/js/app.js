@@ -53,9 +53,9 @@ $(() => {
 
   //instructions per level
   const instructions = {
-    'Level 1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">',
-    'Level 2': 'Congratulations on finishing Level 1. Now let\'s try to ....'
-  }
+    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. <br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
+    '2': 'Congratulations on finishing Level 1. Try again and this time avoid the evil placeholder for shell.<br> You can also use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
+  };
 
   //calculates total number of squares in grid
   const totalNbSquares = nbColumns * nbRows;
@@ -147,7 +147,7 @@ $(() => {
       $middleSectionText.text(`   X   ${nbLives}`);
       $marioIntro.show();
       //changes bottom section to instructions for next level
-      $bottomSectionText.html('Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible and avoid the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">');
+      $bottomSectionText.html(instructions[level]);
       $arrowButton.show();
     } else { //Game Over
       //change audio
