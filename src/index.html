@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <div class="gameBoardContainer">
+    <div class="BoardAndheader">
       <header>
         <!-- displays total score, number of coins, level and Timer -->
         <div class="globalScore">
@@ -27,35 +27,37 @@
           Time: <span class="timer">30</span>
         </div>
       </header>
-      <main>
 
-        <!-- For intro screens -->
-        <section class="topSection">Welcome to Mario Coin Quest!</section>
-        <section class="middleSection">
-          <img class="marioIntro" src="/images/littleMarioRight.png" alt="mario" style="display: none">
-          <div class="arrow animate">
-            <i class="fas fa-caret-right fa-sm"></i>
-          </div>
-          <p class="animate">1 Player Game</p>
-        </section>
-        <section class="bottomSection">
-          <p>Leaderboard</p>
-          <div class="arrowButton" style="display: none">
-            <i class="fas fa-caret-right fa-sm"></i>
-            <button class="goButton">Let's play!</button>
-          </div>
-        </section>
-        <!-- For game and grid-->
-        <div class="mainGrid">
-        </div>
-        <audio class="events">
-        </audio>
-        <audio loop class="backgroundMusic">
-        </audio>
-      </main>
 
+      <div class="gameBoardContainer">
+        <main>
+          <!-- For intro screens -->
+          <section class="topSection">Welcome to Mario Coin Quest!</section>
+          <section class="middleSection">
+            <img class="marioIntro" src="/images/littleMarioRight.png" alt="mario" style="display: none">
+            <div class="arrow animate">
+              <i class="fas fa-caret-right fa-sm"></i>
+            </div>
+            <p class="animate">1 Player Game</p>
+          </section>
+          <section class="bottomSection">
+            <p>Leaderboard</p>
+            <div class="arrowButton" style="display: none">
+              <i class="fas fa-caret-right fa-sm"></i>
+              <button class="goButton">Let's play!</button>
+            </div>
+          </section>
+          <!-- For game and grid-->
+          <div class="mainGrid">
+          </div>
+          <audio class="events">
+          </audio>
+          <audio loop class="backgroundMusic">
+          </audio>
+        </main>
+      </div>
       <footer>
-        <!-- Made with love by Fabienne P -->
+
       </footer>
     </div>
   </body>

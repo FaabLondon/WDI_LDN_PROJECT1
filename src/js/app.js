@@ -3,12 +3,13 @@ $(() => {
 
   //****************************** Variables **********************************
   //DOM variables
-  const $gameBoardContainer = $('.gameBoardContainer');
+  const $BoardAndheader = $('.BoardAndheader');
   const $grid = $('.mainGrid');
   const $sections = $('section');
   const $topSection = $('.topSection');
   const $middleSection= $('.middleSection');
   const $bottomSection= $('.bottomSection');
+  const $footer= $('footer');
   const $middleSectionText = $('.middleSection p');
   const $bottomSectionText = $('.bottomSection p');
   const $levelSpan = $('.levelSpan');
@@ -53,8 +54,8 @@ $(() => {
 
   //instructions per level
   const instructions = {
-    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. <br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
-    '2': 'Congratulations on finishing Level 1. Try again and this time avoid the evil placeholder for shell.<br> You can also use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
+    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
+    '2': 'Congratulations on finishing Level 1. Try again and this time avoid the evil placeholder for shell. Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
   };
 
   //calculates total number of squares in grid
@@ -116,7 +117,10 @@ $(() => {
     $arrow.hide();
     $middleSectionText.removeClass('animate');
     //remove background picture
-    $gameBoardContainer.css({
+    $BoardAndheader.css({
+      backgroundImage: 'none'
+    });
+    $footer.css({
       backgroundImage: 'none'
     });
 
@@ -204,7 +208,10 @@ $(() => {
     $grid.hide();
     $sections.show();
     //remove background picture
-    $gameBoardContainer.css({
+    $BoardAndheader.css({
+      backgroundImage: 'none'
+    });
+    $footer.css({
       backgroundImage: 'none'
     });
 
@@ -240,12 +247,14 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const initialTime = 5; //to change back to 30 seconds
+    const initialTime = 2; //to change back to 30 seconds
 
     //change background picture for that level
-    $gameBoardContainer.css({
-      backgroundImage: 'url(/images/backgroundLevel1.png)',
-      backgroundSize: 'contain'
+    $BoardAndheader.css({
+      backgroundImage: 'url(/images/backgroundLevel1.png)'
+    });
+    $footer.css({
+      backgroundImage: 'url(/images/Level1footer.png)'
     });
 
     //Set Music for the Level
@@ -316,9 +325,11 @@ $(() => {
     const initialTime = 30; //change back to 30 seconds
 
     //change background picture for that level
-    $gameBoardContainer.css({
-      backgroundImage: 'url(/images/backgroundLevel2.png)',
-      backgroundSize: 'contain'
+    $BoardAndheader.css({
+      backgroundImage: 'url(/images/backgroundLevel2.png)'
+    });
+    $footer.css({
+      backgroundImage: 'url(/images/Level2footer.png)'
     });
 
     //Set Music for the Level
@@ -338,7 +349,7 @@ $(() => {
       clearInterval(timerID);
       timeUpFrame();
     }, (initialTime + 2) * 1000);
-    animateElementLeftRight(15, 1, 200, initialTime * 1000, ennemyTurtle, 'ennemy');
+    //animateElementLeftRight(15, 1, 200, initialTime * 1000, ennemyTurtle, 'ennemy');
     //Animate coins, ennemies and bonus
     animateElementDown(0, 200, avgIncrTimeOut, coin, 'coin');
     animateElementDown(6, 1000, avgIncrTimeOut, coin, 'coin');

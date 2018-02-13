@@ -1,134 +1,155 @@
 body {
+  //width: 1425px;
   background-color: black;
   color: white;
   font-family: 'VT323', monospace;
   margin: 0 auto;
   height: 100vh;
   font-size: 32px;
+  padding: 0;
+  border: 0;
 
-  .gameBoardContainer{
-    width: 1425px;  // TO CHECK AGAIN
-    margin: 0 auto;
-    height: 100%;
+  .BoardAndheader{
+    width: 1425px; // works for current grid
+    background-repeat: no-repeat;
+    background-size: cover;
+    //height: 100%; if 100% then Mario is not always in the same position on the screen when different screen sizes.
+    //background-position: left;
 
     header{
-      margin: 30px 20px;
+      height: 40px;
+      margin: 0;
+      padding: 20px 10px;
       display: flex;
       justify-content: space-between;
     }
 
-    main{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    .gameBoardContainer{
+      //width: 1425px;  // works for current grid
+      margin: 0 auto;
+      //height: calc(100vh-40px); not sure if we need this
+      // background-repeat: no-repeat;
+      // background-size: cover;
+      // background-position: left;
 
-
-      section{
-        margin: 10px auto;
-        width: 50%;
-        text-align: center;
-
-        &.topSection{
-          height: 200px;
-          //background-color: black;
-          line-height: 200px;
-          margin-top: 50px;
-
-        }
-
-        &.middleSection{
-          height: 80px;
-          //background-color: black;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-
-          .animate{
-            animation: pulsating 0.5s linear alternate infinite;
-          }
-
-          p{
-            padding: 0 10px;
-
-            &.animate{
-              animation: pulsating 0.5s linear alternate infinite;
-            }
-
-
-          }
-
-        }
-
-        &.bottomSection{
-          height: 200px;
-          //background-color: black;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          .arrowButton{
-            animation: pulsating 0.5s linear alternate infinite;
-
-            .goButton{
-              animation: pulsating 0.5s linear alternate infinite;
-              border: black;
-              background-color: black;
-              color: white;
-              font-family: 'VT323', monospace;
-              font-size: 32px;
-              outline:0;
-            }
-          }
-        }
-      }
-
-      .mainGrid{
-        width: 100%;
+      main{
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-wrap: wrap;
+        height: 100%;
 
-        .square{
-          height: 75px;
-          width: 75px;
-          //background-color: pink;
-          //border: 1px black solid;
+
+        section{
+          margin: 10px auto;
+          width: 50%;
+          text-align: center;
+
+          &.topSection{
+            height: 200px;
+            //background-color: black;
+            line-height: 200px;
+            margin-top: 50px;
+
+          }
+
+          &.middleSection{
+            height: 80px;
+            //background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            .animate{
+              animation: pulsating 0.5s linear alternate infinite;
+            }
+
+            p{
+              padding: 0 10px;
+
+              &.animate{
+                animation: pulsating 0.5s linear alternate infinite;
+              }
+
+
+            }
+
+          }
+
+          &.bottomSection{
+            height: 200px;
+            //background-color: black;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .arrowButton{
+              animation: pulsating 0.5s linear alternate infinite;
+
+              .goButton{
+                animation: pulsating 0.5s linear alternate infinite;
+                border: black;
+                background-color: black;
+                color: white;
+                font-family: 'VT323', monospace;
+                font-size: 32px;
+                outline:0;
+              }
+            }
+          }
+        }
+
+        .mainGrid{
+          width: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          position: relative;
+          flex-wrap: wrap;
 
-          img{
-            position: absolute; //so that Mario can move when hit by ennemy
+          .square{
+            height: 75px;
+            width: 75px;
+            //background-color: pink;
+            //border: 1px black solid;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
 
-              &.marioLost{
-                animation: moveUpAndDown 3s linear;
-              }
+            img{
+              position: absolute; //so that Mario can move when hit by ennemy
 
-              &.coin{
-                animation: moveDown 400ms linear;
-              }
+                &.marioLost{
+                  animation: moveUpAndDown 3s linear;
+                }
 
-              &.ennemy.mushroom{
-                animation: moveDown 200ms linear;
-              }
+                &.coin{
+                  animation: moveDown 400ms linear;
+                }
 
-              &ennemy.shell{
-                //animation: moveDown 200ms linear;
-              }
+                &.ennemy.mushroom{
+                  animation: moveDown 200ms linear;
+                }
 
-              // &.mario{
-              //   animation: move 200ms linear;
-              // }
+                &ennemy.shell{
+                  //animation: moveDown 200ms linear;
+                }
+
+                // &.mario{
+                //   animation: move 200ms linear;
+                // }
+            }
+
           }
-
         }
       }
     }
     footer{
+      height: 120px;
+      margin: 0;
+      //background-repeat: no-repeat;
+      //background-size: cover;
 
     }
   }
