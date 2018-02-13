@@ -32,7 +32,8 @@ $(() => {
   let level = 1; //initial level
   const levels = {
     1: level1,
-    2: level2};
+    2: level2,
+    3: level3};
   let nbLives = 0; //initial number of lives
   const nbColumns = 19;
   const nbRows = 8;
@@ -54,8 +55,8 @@ $(() => {
 
   //instructions per level
   const instructions = {
-    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
-    '2': 'Congratulations on finishing Level 1. Try again and this time avoid the evil placeholder for shell. Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
+    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. <br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
+    '2': 'Congratulations on finishing Level 1. Try again and this time avoid the evil placeholder for shell. <br> Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
   };
 
   //calculates total number of squares in grid
@@ -194,7 +195,7 @@ $(() => {
     $(document).off('keydown'); // to make sure all keydown events are off before creating new ones - This is also done in another fucntion but apparently setting some events off() are not seen globally!!
     //reactivate Mario moving on keydown
     $(document).on('keydown', animateMario); //Mario going left, right and up
-    $(document).on('keydown', marioJump); //Mario jumping
+    //$(document).on('keydown', marioJump); //Mario jumping
     //start current level
     levels[level]();
   }
@@ -244,6 +245,8 @@ $(() => {
   //************************* GAME PLAN - LEVEL 1 ******************************
 
   function level1(){
+    //desactivate Mario jumping as not jumping in that level
+    $(document).off('keydown', marioJump);
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
@@ -319,6 +322,8 @@ $(() => {
 
   //*************************GAME PLAN - LEVEL 2 *******************************
   function level2(){
+    //activate Mario jumping in that level
+    $(document).on('keydown', marioJump);
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
@@ -349,7 +354,8 @@ $(() => {
       clearInterval(timerID);
       timeUpFrame();
     }, (initialTime + 2) * 1000);
-    //animateElementLeftRight(15, 1, 200, initialTime * 1000, ennemyTurtle, 'ennemy');
+
+    animateElementLeftRight(15, 1, 200, initialTime * 1000, ennemyTurtle, 'ennemy');
     //Animate coins, ennemies and bonus
     animateElementDown(0, 200, avgIncrTimeOut, coin, 'coin');
     animateElementDown(6, 1000, avgIncrTimeOut, coin, 'coin');
@@ -581,7 +587,7 @@ $(() => {
       const currMarioPic = $($squares[marioPos]).html();
       //removes Mario from initial position
       $($squares[marioPos]).html('');
-      $($squares[marioPos]).removeClass('mario'); //toggle mario class on div
+      $($squares[marioPos]).removeClass('mario');
       // adds Mario in new position up a div and toggle mario class
       $($squares[newPos]).html(currMarioPic);
       $($squares[newPos]).addClass('mario');
@@ -604,7 +610,7 @@ $(() => {
         //reactivate Mario moving on keydown
         $(document).on('keydown', animateMario); //Mario going left, right and up
         $(document).on('keydown', marioJump); //Mario jumping
-      },500);
+      },400);
     }
   }
 
