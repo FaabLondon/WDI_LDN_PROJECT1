@@ -28,7 +28,7 @@ $(() => {
   let timerID = 0; //timerId of the global timer
   let timeOutId = 0; //timerid of of the timout that stops the timer
   let timeOutId2 = 0; //timer id of Mario jumping animation
-  let level = 1; //initial level
+  let level; //initial level
   const levels = {
     1: level1,
     2: level2,
@@ -41,11 +41,12 @@ $(() => {
   let nbCoins = 0; //initial number of coins
   let timeouts = []; //will store all timeouts
   let globalScore = 0;
-  let MarioJumpSpeed = 450;
+  let MarioJumpSpeed;
   let leaderBoard = {};
 
   //images and audio for Mario, ennemies and bonuses
   const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
+  const coincaught = '<img class="coin caught" src="" alt="coin">';
   const coinFaster = '<img class="coin faster" src="/images/coin.png" alt="coin">';
   const lifeMushroom = '<img class="life" src="/images/lifeMushroom.png" alt="life">';
   const ennemyMushroom = '<img class="ennemy mushroom" src="/images/ennemyMushroom.png" alt="ennemy">';
@@ -118,7 +119,7 @@ $(() => {
       $bottomSectionText.text('You made it to the Leader Board! Display Leaderboard'); //to update
     }
     //initialise Variables
-    level = 1; //initial level
+    level = 2; //initial level
     globalScore = 0;
     nbLives = 5; //initial number of live
     timeouts = [];
@@ -271,7 +272,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 4;
+    const gameDuration = 10;
     const possibleTimes = [200, 500, 800, 1000]; //Possible time between each animation
     const possibleElement = [ //repeated coins 2 x as want them to be 2 x more likely than ennemies
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
@@ -297,7 +298,7 @@ $(() => {
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyMushroom, 'class': 'ennemy'}
     ];
-    //slow jumps so Mario has time to avoid rolling shell - problem is that might not be hit by ennemy going down as jump to slow
+    //slow jumps so Mario has time to avoid rolling shell
     MarioJumpSpeed = 450;
 
     //add a rolling shell at the very beginning and during the whole duration of the game
@@ -312,7 +313,7 @@ $(() => {
   function level3(){
     //set speed for the level and Duration - Spee is higher for the coins now
     const rapidIncrTimeOut = 200;
-    const gameDuration = 4;
+    const gameDuration = 40;
 
     const possibleTimes = [100, 500, 800, 1000]; //decreased possible interval between animations
     //Added a new type of ennemy, repeated coins 3 x as want them to be as likely as ennemies
@@ -324,8 +325,8 @@ $(() => {
       {'speed': rapidIncrTimeOut, 'picture': ennemyTurtleFlying, 'class': 'ennemy'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyTurtleFlying, 'class': 'ennemy'}
     ];
-    //faster jump speed as no rolling shell on the floor
-    MarioJumpSpeed = 300;
+    //Mario jump quicker
+    MarioJumpSpeed = 200;
 
     //Animate coins, ennemies and bonus
     gamePlan(gameDuration, possibleTimes, possibleElement);
@@ -337,7 +338,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 4; //change back to 30 seconds
+    const gameDuration = 5; //change back to 30 seconds
 
     const possibleTimes = [100, 500, 800, 1000]; //decrease possible interval a bit
     //Added an extra type of ennemy and we will still have the rolling shell
@@ -348,6 +349,7 @@ $(() => {
       {'speed': rapidIncrTimeOut, 'picture': ennemyMushroom, 'class': 'ennemy'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyTurtleFlying, 'class': 'ennemy'}
     ];
+
     //slower jump speed as rolling shell on the floor
     MarioJumpSpeed = 450;
 
@@ -355,7 +357,6 @@ $(() => {
     animateElementLeftRight(15, 1, 200, gameDuration * 1000, ennemyTurtle, 'ennemy');
     //Animate coins, ennemies and bonus
     gamePlan(gameDuration, possibleTimes, possibleElement);
-
   }
 
   //****************************** IMPLEMENTS GAME PLAN **********************************
@@ -453,43 +454,41 @@ $(() => {
   // type: class by type of element (coin / ennemy / bonus)
 
   function animate(i, timeOutIncrement, incrTimeOut, src, type){
+
     let timerIdlocal = 0;
     //animate the element by making it appear in square i and check if hit with Mario
     timerIdlocal = setTimeout(() => {
-      //set class 'type' on the div if type not there - used addClass as toggle not working properly
-      if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type);
-      //check for a hit (Mario - ennemy/coin in same div)
+      //set class 'type' on the div if type not there, then if hit (Mario - ennemy/coin in same div)
       ////if no hit then update div with element image
-      if (checkHit($($squares[i]), timerIdlocal) === false){
-        $($squares[i]).html(src);
-      }
+      if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type);
+      if (!checkHit(i, timerIdlocal)) $($squares[i]).html(src);
     }, timeOutIncrement);
     timeouts.push(timerIdlocal); //keep tracker of all timeouts as I want to clear all of them at end of game
 
     //After incrTimeOut make the element disappear
     timeOutIncrement = timeOutIncrement + incrTimeOut;
 
-    //then makes the element disappear
+    //then makes the element disappear in the same square
     timeouts.push(setTimeout(() => {
-      //remove class 'type' on the div
+      //remove class 'type' on the div and check that mario image doesn't get replaced by coin or ennemy
       if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type);
-      //check that mario image doesn't get replaced by coin or ennemy
-      if ($($squares[i]).hasClass('mario') === false) {
-        $($squares[i]).html('');
-      }
+      if (!$($squares[i]).hasClass('mario')) $($squares[i]).html('');
     }, timeOutIncrement));
+
     return timeOutIncrement;
   }
 
   //************************ CHECKS WETHER COIN/ENNEMY/BONUS HIT*******************
 
-  function checkHit($sq, timerIdlocal = 0){
+  function checkHit(i, timerIdlocal = 0){
+
     //if we have Mario and a coin in the same div, it is a hit
-    if ($sq.hasClass('mario') === true && $sq.hasClass('coin') === true){
-      //stops the animation of the coin
+    if (($($squares[i]).hasClass('mario') || $($squares[i+nbColumns]).hasClass('mario')) && $($squares[i]).hasClass('coin') && !$($squares[i]).hasClass('hit')) {
+      $($squares[i+nbColumns]).addClass('hit'); //add hit on the row below to avoid double counting after a jump
+      //stops the animation of the coin - does not stop all the subsequent ones
       clearTimeout(timerIdlocal);
-      //removes coin class - to avoid double counting
-      $sq.removeClass('coin');
+      //removes coin class and add 'caught'- to avoid double counting
+      $($squares[i]).removeClass('coin');
       //change audio when mario catches coin
       $eventAudio.attr('src', coinCaught);
       $eventAudio.get(0).play();
@@ -498,30 +497,41 @@ $(() => {
       //increment nbCoins and update number of coins on screen
       nbCoins++;
       $coinsSpan.text(nbCoins);
+      setTimeout(() => {
+        $($squares[i+nbColumns]).removeClass('hit');
+      }, 400);
       return true;
     }
+
     //if we have Mario and an ennemy in the same div
-    if ($sq.hasClass('mario') === true && $sq.hasClass('ennemy') === true) {
+    if (($($squares[i]).hasClass('mario') || $($squares[i+nbColumns]).hasClass('mario')) && $($squares[i]).hasClass('ennemy') && !$($squares[i]).hasClass('hit')) {
+      $($squares[i+nbColumns]).addClass('hit');
       //stops the animation of the ennemy
       clearTimeout(timerIdlocal);
       //removes ennemy class - to avoid double counting
-      $sq.removeClass('ennemy');
+      $($squares[i]).removeClass('ennemy');
       //call Mario losing function
       MarioLosing();
       return true;
     }
+
     //if we have Mario and a life mushroom in the same div
-    if ($sq.hasClass('mario') === true && $sq.hasClass('life') === true) {
+    if (($($squares[i]).hasClass('mario') || $($squares[i+nbColumns]).hasClass('mario')) && $($squares[i]).hasClass('life') && !$($squares[i]).hasClass('hit')) {
+      $($squares[i+nbColumns]).addClass('hit');
+      $($squares[i+nbColumns]).addClass('hit'); //add hit on the row below to avoid double counting after a jump
       //stops the animation of the coin
       clearTimeout(timerIdlocal);
       //removes coin class - to avoid double counting
-      $sq.removeClass('life');
+      $($squares[i]).removeClass('life');
       //change audio when mario catches lifeMushroom
       $eventAudio.attr('src', lifeMushroomcaught);
       $eventAudio.get(0).play();
       setTimeout(() => $eventAudio.get(0).pause(), 1000);
       //increment nblifes
       nbLives++;
+      setTimeout(() => {
+        $($squares[i+nbColumns]).removeClass('hit');
+      }, 400);
       return true;
     }
     return false;
@@ -558,9 +568,13 @@ $(() => {
 
   //************************  SWITCH MARIO POSITION *****************************
   function switchMario(marioPic, newPos, marioPos){
-    //removes Mario from initial position and its class
-    $($squares[marioPos]).html('');
+    // //removes Mario from initial position and its class - if Mario jumps, delay
+    // //the removal of class Mario to make sure he catches coin or hit by ennemy while jumping
+    // if (newPos >= leftPos - nbColumns && newPos <= rightPos - nbColumns) {
+    //   setTimeout(() => $($squares[marioPos]).removeClass('mario'), 200);
+    // } else $($squares[marioPos]).removeClass('mario');
     $($squares[marioPos]).removeClass('mario');
+    $($squares[marioPos]).html('');
     // adds Mario in new position and add Mario class
     $($squares[newPos]).html(marioPic);
     $($squares[newPos]).addClass('mario');
