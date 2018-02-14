@@ -488,7 +488,6 @@ $(() => {
     return timeOutIncrement;
   }
 
-
   //************************ CHECKS WETHER COIN OR ENNEMY HIT*******************
 
   function checkHit($sq, timerIdlocal = 0){
@@ -546,7 +545,6 @@ $(() => {
     $eventAudio.get(0).play();
     //decrement nb of lives
     nbLives--;
-
     setTimeout(() => {
       secondFrame();
     }, 3000); //wait for the 3sec mario animation to finish
