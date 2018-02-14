@@ -8,27 +8,28 @@ $(() => {
   const $sections = $('section');
   const $topSection = $('.topSection');
   const $middleSection= $('.middleSection');
-  const $bottomSection= $('.bottomSection');
+  //const $bottomSection= $('.bottomSection');
   const $footer= $('footer');
   const $middleSectionText = $('.middleSection p');
-  const $bottomSectionText = $('.bottomSection p');
+  const $bottomSectionText = $('.bottomSection p.Leaderboard');
+  const $bottomSectionInstructions = $('.bottomSection p.instructions');
   const $levelSpan = $('.levelSpan');
   const $coinsSpan = $('.coinsSpan');
   const $scoreSpan = $('.scoreSpan');
   const $marioIntro = $('.marioIntro');
   const $arrowButton = $('.arrowButton');
   const $arrow = $('.arrow');
-  const $coin = $('.coin');
+  //const $coin = $('.coin');
   const $timer = $('.timer');
   const $eventAudio = $('.events');
   const $backgroundAudio = $('.backgroundMusic');
   //let keyDown = {};
 
   //Initial variables for game
-  let timer = 0;
-  let timerID = 0;
-  let timeOutId = 0;
-  let timeOutId2 = 0;
+  let timer = 0; //global timers
+  let timerID = 0; //timerId of the global timer
+  let timeOutId = 0; //timerid of of the timout that stops the timer
+  let timeOutId2 = 0; //timer id of Mario jumping animation
   let level = 1; //initial level
   const levels = {
     1: level1,
@@ -59,10 +60,16 @@ $(() => {
 
   //instructions per level
   const instructions = {
-    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. <br><br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
-    '2': 'Congratulations on finishing Level 1. Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle ">. <br> <br> Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!',
-    '3': 'Amazing, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding more ennemies <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">. <br><br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
-    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle ">, the <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and the <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">. <br> <br> Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
+    '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">',
+    '2': 'Congratulations on finishing Level 1. Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle ">',
+    '3': 'Amazing! Try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding more ennemies <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">',
+    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle "> the <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and the <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">'
+  };
+  const instructionsMove = {
+    '1': 'Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
+    '2': 'Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!',
+    '3': '',
+    '4': ''
   };
 
   //calculates total number of squares in grid
@@ -97,14 +104,13 @@ $(() => {
     $middleSection.on('click',secondFrame);
     //make the grid disappear
     $grid.hide();
-
     //initiliase content
     if (level > Object.keys(levels).length) $topSection.text('You completed the game!');
     else $topSection.text('Welcome to Mario Coin Quest!');
 
     $middleSectionText.addClass('animate');
     $arrow.show();
-    $middleSectionText.text('1 Player Game');
+    $middleSectionText.text('Let\'s start!');
     if (globalScore > 0){
       //check if in top 5, //add score to leaderBoard object
       $bottomSectionText.text('You made it to the Leader Board! Display Leaderboard'); //to update
@@ -165,6 +171,8 @@ $(() => {
       $marioIntro.show();
       //changes bottom section to instructions for next level
       $bottomSectionText.html(instructions[level]);
+      $bottomSectionInstructions.html(instructionsMove[level]);
+      $bottomSectionInstructions.addClass('animate'); //to make the instructions pulsate and move visible
       $arrowButton.show();
     } else { //Game Over
       //change audio
@@ -175,6 +183,7 @@ $(() => {
       //Change display
       $marioIntro.hide();
       $middleSectionText.text('GAME OVER');
+      $bottomSectionInstructions.html('');
       $bottomSectionText.html('');
       $arrowButton.hide();
       setTimeout(() => {
@@ -230,7 +239,8 @@ $(() => {
     //removes event keydown on Mario to prevent Mario from moving
     $(document).off('keydown');
 
-    $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`); //how to make appear as a box on top of grid?
+    $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`);
+    $bottomSectionInstructions.html('');
     $bottomSectionText.html('');
     $marioIntro.hide();
     $arrowButton.hide();
@@ -364,7 +374,7 @@ $(() => {
     //set speed for the level and Duration
     //const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const initialTime = 30; //to change back to 30 seconds
+    const initialTime = 4; //to change back to 30 seconds
 
     //decrease possible interval between animations
     //increased speed of coins falling
@@ -424,7 +434,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const initialTime = 30; //change back to 30 seconds
+    const initialTime = 4; //change back to 30 seconds
 
     //variables for random elements in animation
     let timeIncr = 0;

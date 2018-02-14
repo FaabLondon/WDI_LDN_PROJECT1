@@ -81,11 +81,17 @@ body {
             justify-content: center;
             align-items: center;
 
+            p{
+              &.instructions{
+                  animation: pulsating 0.5s linear alternate infinite;
+              }
+            }
+
             .arrowButton{
-              animation: pulsating 0.5s linear alternate infinite;
+              //animation: pulsating 0.5s linear alternate infinite;
 
               .goButton{
-                animation: pulsating 0.5s linear alternate infinite;
+                //animation: pulsating 0.5s linear alternate infinite;
                 border: black;
                 background-color: black;
                 color: white;
@@ -136,20 +142,16 @@ body {
                 &ennemy.shell{
                   //animation: moveDown 200ms linear;
                 }
-
-
+              }
             }
-
           }
         }
       }
-    }
     footer{
       height: 120px;
       margin: 0;
       //background-repeat: no-repeat;
       //background-size: cover;
-
     }
   }
 }
