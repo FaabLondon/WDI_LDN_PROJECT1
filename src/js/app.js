@@ -408,114 +408,86 @@ $(() => {
   // column: nb of the column where the element falls
   // initialTimeOut: delay before fall
   // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
-  // src: which ennemy, which gives image to use
+  // src: image to use for the ennemy
+  // type: class by type of element (coin / ennemy / bonus)
 
   function animateElementDown(column, InitialTimeOut, incrTimeOut, src, type){
-    let timerIdlocal = 0;
     //initialise timeout
     let timeOutIncrement = InitialTimeOut;
-
-    //loop to animate coin in the different columns
+    //loop to animate element in the different columns down the screen
     for (let i = 0 + column; i < totalNbSquares; i = i + nbColumns){
-      //animate the element by making it appear in square i and check if hit with Mario
-      timerIdlocal = setTimeout(() => {
-        //set class 'type' on the div if type not there
-        if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type); //toggleClass did not work properly
-        //check for a hit (Mario - ennemy/coin in same div) - only in the 2 bottom nbRows
-        if (checkHit($($squares[i]), timerIdlocal) === false){
-          $($squares[i]).html(src); //if no hit then update div with element
-        }
-      }, timeOutIncrement);
-      timeouts.push(timerIdlocal);
-
-      timeOutIncrement = timeOutIncrement + incrTimeOut;
-      //then make the element disappear
-      timeouts.push(setTimeout(() => {
-        //remove class 'type' on the div
-        if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type); //toggleClass did not work properly
-        //check that mario doesn't get replaced by coin or ennemy
-        if ($($squares[i]).hasClass('mario') === false) {
-          //only delete element image if mario is not in the div, otherwise would delete mario
-          $($squares[i]).html('');
-        }
-      }, timeOutIncrement));
+      //animate element - has to return timeOutIncrement as it keeps being incremented duing animation
+      timeOutIncrement = animate(i, timeOutIncrement, incrTimeOut, src, type);
     }
   }
 
   //***************************** ANIMATE ELEMENT LEFT AND RIGHT *******************************
-  //animateElementDown(column, InitialTimeOut, incrTimeOut, src)
+  // animateElementLeftRight(column, InitialTimeOut, incrTimeOut, srcPicture, class)
   // column: nb of the column where the element falls
   // initialTimeOut: delay before fall
   // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
-  // src: which ennemy, which gives image to use
+  // src: image to use for the ennemy
+  // type: class by type of element (coin / ennemy / bonus)
 
   function animateElementLeftRight(column, InitialTimeOut, incrTimeOut, duration, src, type){
-    let timerIdlocal = 0;
     //initialise timeout
     let timeOutIncrement = InitialTimeOut;
+    //Set the element in column 'column'
     let initPosition = rightPos - nbColumns + column;
-    console.log(`initposition for i ${initPosition}`);
-
-    //loop to animate element in the different columns on bottom row - animations goes on
-    //until timer is at 0 or animation get killed (when Mario loses or time up) -
-    //to be sure I do not get an infinite loop
+    //loop to animate element back and forth in the different columns on bottom row
+    //Animations goes on until timer is at 0
     while(timeOutIncrement <= duration){
-
       //PHASE 1 - GO LEFT FROM INITIAL POSITION UNTIL LEFT BORDER
       for (let i = initPosition; i >= leftPos; i--){
-        console.log(`position of i ${i}`);
-        //animate the element by making it appear in square i and check if hit with Mario
-        timerIdlocal = setTimeout(() => {
-          //set class 'type' on the div if type not there
-          if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type); //toggleClass did not work properly
-          //check for a hit (Mario - ennemy/coin in same div) - only in the 2 bottom nbRows
-          if (checkHit($($squares[i]), timerIdlocal) === false){
-            $($squares[i]).html(src); //if no hit then update div with element
-          }
-        }, timeOutIncrement);
-        timeouts.push(timerIdlocal);
-        timeOutIncrement = timeOutIncrement + incrTimeOut;
-        //then make the element disappear
-        timeouts.push(setTimeout(() => {
-          //remove class 'type' on the div
-          if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type); //toggleClass did not work properly
-          //check that mario doesn't get replaced by coin or ennemy
-          if ($($squares[i]).hasClass('mario') === false) {
-            //only delete element image if mario is not in the div, otherwise would delete mario
-            $($squares[i]).html('');
-          }
-        }, timeOutIncrement));
+        timeOutIncrement = animate(i, timeOutIncrement, incrTimeOut, src, type);
       }
-
       //PHASE 2 - GO FROM LEFT BORDER TO RIGHT BORDER
       for (let i = leftPos + 1; i <= rightPos; i++){
-        //animate the element by making it appear in square i and check if hit with Mario
-        timerIdlocal = setTimeout(() => {
-          //set class 'type' on the div if type not there
-          if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type); //toggleClass did not work properly
-          //check for a hit (Mario - ennemy/coin in same div) - only in the 2 bottom nbRows
-          if (checkHit($($squares[i]), timerIdlocal) === false){
-            $($squares[i]).html(src); //if no hit then update div with element
-          }
-        }, timeOutIncrement);
-        timeouts.push(timerIdlocal);
-
-        timeOutIncrement = timeOutIncrement + incrTimeOut;
-
-        //then make the element disappear
-        timeouts.push(setTimeout(() => {
-          //remove class 'type' on the div
-          if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type); //toggleClass did not work properly
-          //check that mario doesn't get replaced by coin or ennemy
-          if ($($squares[i]).hasClass('mario') === false) {
-            //only delete element image if mario is not in the div, otherwise would delete mario
-            $($squares[i]).html('');
-          }
-        }, timeOutIncrement));
+        timeOutIncrement = animate(i, timeOutIncrement, incrTimeOut, src, type);
       }
+      //to re-start the animation where we left it after first two loops
       initPosition =  rightPos - 1;
     }
   }
+
+
+  //***************************** ANIMATE ELEMENT *******************************
+  //animate(i, timeOutIncrement, incrTimeOut, src, type)
+  // i: index of the element to animate
+  // timeOutIncrement: time delay for each timeout - it keeps increasing until end of game
+  // incrTimeOut: Timeout beteen each step of animation, the highest the number the slower the animation
+  // src: image to use for the ennemy
+  // type: class by type of element (coin / ennemy / bonus)
+
+  function animate(i, timeOutIncrement, incrTimeOut, src, type){
+    let timerIdlocal = 0;
+    //animate the element by making it appear in square i and check if hit with Mario
+    timerIdlocal = setTimeout(() => {
+      //set class 'type' on the div if type not there - used addClass as toggle not working properly
+      if (!$($squares[i]).hasClass(type)) $($squares[i]).addClass(type);
+      //check for a hit (Mario - ennemy/coin in same div)
+      ////if no hit then update div with element image
+      if (checkHit($($squares[i]), timerIdlocal) === false){
+        $($squares[i]).html(src);
+      }
+    }, timeOutIncrement);
+    timeouts.push(timerIdlocal); //keep tracker of all timeouts as I want to clear all of them at end of game
+
+    //After incrTimeOut make the element disappear
+    timeOutIncrement = timeOutIncrement + incrTimeOut;
+
+    //then make the element disappear
+    timeouts.push(setTimeout(() => {
+      //remove class 'type' on the div
+      if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type);
+      //check that mario image doesn't get replaced by coin or ennemy
+      if ($($squares[i]).hasClass('mario') === false) {
+        $($squares[i]).html('');
+      }
+    }, timeOutIncrement));
+    return timeOutIncrement;
+  }
+
 
   //************************ CHECKS WETHER COIN OR ENNEMY HIT*******************
 
