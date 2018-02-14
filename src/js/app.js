@@ -46,6 +46,7 @@ $(() => {
 
   //images and audio for Mario, ennemies and bonuses
   const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
+  const coinFaster = '<img class="coin faster" src="/images/coin.png" alt="coin">';
   const ennemyMushroom = '<img class="ennemy mushroom" src="/images/ennemyMushroom.png" alt="ennemy">';
   const ennemyTurtle = '<img class="ennemy shell" src="/images/ennemyTurtle.png" alt="ennemy">';
   const ennemyTurtleFlying = '<img class="ennemy flying" src="/images/ennemyTurtleFlying.png" alt="ennemy">';
@@ -60,8 +61,8 @@ $(() => {
   const instructions = {
     '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">. <br><br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
     '2': 'Congratulations on finishing Level 1. Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle ">. <br> <br> Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!',
-    '3': 'Amazing, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding more ennemies <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleSmall.png" alt=" ennemies ">. <br><br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
-    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle "> and <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleSmall.png" alt=" ennemies ">. <br> <br> Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
+    '3': 'Amazing, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding more ennemies <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">. <br><br> Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
+    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle ">, the <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and the <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">. <br> <br> Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!'
   };
 
   //calculates total number of squares in grid
@@ -255,7 +256,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const initialTime = 30;
+    const initialTime = 4;
     //variables for random elements in animation
     let timeIncr = 0;
     let timeTotal = 0;
@@ -307,7 +308,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const initialTime = 30; //change back to 30 seconds
+    const initialTime = 4; //change back to 30 seconds
 
     //variables for random elements in animation
     let timeIncr = 0;
@@ -358,22 +359,27 @@ $(() => {
 
   //**************************** LEVEL 3: RANDOM GAME *******************************
   function level3(){
+    //activate Mario jumping in that level
+    $(document).on('keydown', marioJump);
     //set speed for the level and Duration
-    const avgIncrTimeOut = 400;
+    //const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
     const initialTime = 30; //to change back to 30 seconds
 
+    //decrease possible interval between animations
+    //increased speed of coins falling
+    //Added a new type of ennemy
+    //repeated coins 2 x as want them to be as likely as ennemies
     //variables for random elements in animation
     let timeIncr = 0;
     let timeTotal = 0;
     let randCol = 0;
     let randElem = 0;
-    const possibleTimes = [100, 500, 800, 1000]; //decrease possible interval a bit
-    //Added a new type of ennemy - repeated coins 2 x as want them to be as likely as ennemies
+    const possibleTimes = [100, 500, 800, 1000];
     const possibleElement = [
-      {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
-      {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
-      {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyMushroom, 'class': 'ennemy'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyTurtleFlying, 'class': 'ennemy'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyTurtleFlying, 'class': 'ennemy'}

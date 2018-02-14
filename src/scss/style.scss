@@ -125,6 +125,10 @@ body {
                   animation: moveDown 400ms linear;
                 }
 
+                &.coin.faster{
+                  animation: moveDown 200ms linear;
+                }
+
                 &.ennemy.mushroom, &.ennemy.flying{
                   animation: moveDown 200ms linear;
                 }
