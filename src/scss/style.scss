@@ -1,5 +1,4 @@
 body {
-  //width: 1425px;
   background-color: black;
   color: white;
   font-family: 'VT323', monospace;
@@ -14,7 +13,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     //height: 100%; if 100% then Mario is not always in the same position on the screen when different screen sizes.
-    //background-position: left;
 
     header{
       height: 40px;
@@ -25,12 +23,7 @@ body {
     }
 
     .gameBoardContainer{
-      //width: 1425px;  // works for current grid
       margin: 0 auto;
-      //height: calc(100vh-40px); not sure if we need this
-      // background-repeat: no-repeat;
-      // background-size: cover;
-      // background-position: left;
 
       main{
         display: flex;
@@ -47,7 +40,6 @@ body {
 
           &.topSection{
             height: 200px;
-            //background-color: black;
             line-height: 200px;
             margin-top: 50px;
 
@@ -55,7 +47,6 @@ body {
 
           &.middleSection{
             height: 80px;
-            //background-color: black;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -76,7 +67,6 @@ body {
 
           &.bottomSection{
             height: 200px;
-            //background-color: black;
             flex-direction: column;
             justify-content: center;
             align-items: center;
