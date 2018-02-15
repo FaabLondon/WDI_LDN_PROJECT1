@@ -59,7 +59,7 @@ $(() => {
   const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
   //sounds
   const marioLosingSound = '/sounds/marioLosing.wav';
-  const coinCaught = '/sounds/marioCoinSound.mp3';
+  const coinCaught = '/sounds/marioCoinSound.wav';
   const gameOverSound = '/sounds/gameOver.wav';
   const additionalLife = 'sounds/newLife.wav';
   const marioJumping = 'sounds/marioJumping.wav';
@@ -600,6 +600,8 @@ $(() => {
     timer = 0; //re-initialise global timer
     //desactivate Mario moving on all keydown
     $(document).off('keydown');
+
+    $($squares).html('');
 
     //clear all timeouts (animation) in the game to stop them
     for (let i = 0; i < timeouts.length; i++) {
