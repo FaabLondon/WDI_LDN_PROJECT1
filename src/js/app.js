@@ -271,6 +271,7 @@ $(() => {
       $middleSectionText.html(`Time's up! <br><br> ${nbCoins > 10 ? 'Congratulations!' : ' '}You caught ${nbCoins} coins!`);
       $bottomSectionInstructions.html('');
       $bottomSectionText.html('');
+      $bottomSectionImg.attr('src',''); //the old pic appears for 1 second hence this line
       $bottomSectionImg.attr('src',thumbsUpLogo);
       $bottomSectionImg.show();
       $marioIntro.hide();
