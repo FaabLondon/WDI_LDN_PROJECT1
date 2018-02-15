@@ -65,6 +65,8 @@ $(() => {
   const additionalLife = 'sounds/newLife.wav';
   const marioJumping = 'sounds/marioJumping.wav';
   const endOfGame = 'sounds/endGame.wav';
+  const ohYeah = 'sounds/ohYeah.wav';
+
 
   //instructions per level
   const instructions = {
@@ -567,6 +569,11 @@ $(() => {
         if (nbCoins % 50 === 0){
           addLife();
         }
+        if (nbCoins === toCatchLevel){
+          $eventAudio.attr('src', ohYeah);
+          $eventAudio.get(0).play();
+        }
+
         $coinsSpan.text(nbCoins);
       }
       return true;
