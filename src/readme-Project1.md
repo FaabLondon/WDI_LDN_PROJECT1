@@ -23,7 +23,7 @@ It features 5 levels with different game speed and enemies. The 2 first levels a
 ###### In level 5, the last level, Mario has to be really fast as he needs to catch at least 40 coins within 45 seconds to finish the game. The parameters in that level have been changed to allow more coins to drop from the sky.
 
 ---
-I was pleased with the final product, which I feel looks good an plays well. The levels can easily be adapted to make them easier or more challenging. A new level can be added in 1 minute which will allow me to develop a larger game with new levels and challenges to further test the player’s skills.
+I was pleased with the final product, which I feel looks good an plays well. The levels can easily be adapted to make them easier or more challenging. A new level can be added in 1 minute which allows to develop a larger game with new levels and challenges to further test the player’s skills.
 
 My main challenge in this game was to check for "collisions" on Mario jumping. In some cases the jump would happen just when the coin or enemy was dropping by 1 square which meant that Mario was missing the coin or not getting hit by the enemy despite jumping on it.
 When this was solved, I would get the opposite effect, with a double counting of coins or double hit by enemies. I ended up using a marker to set a coin or bonus as 'caught' to avoid a double catch.

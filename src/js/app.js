@@ -65,7 +65,7 @@ $(() => {
   const additionalLife = 'sounds/newLife.wav';
   const marioJumping = 'sounds/marioJumping.wav';
   const endOfGame = 'sounds/endGame.wav';
-  const ohYeah = 'sounds/ohYeah.wav';
+  const yeah = 'sounds/yeah.wav';
 
 
   //instructions per level
@@ -137,7 +137,7 @@ $(() => {
       $backgroundAudio.get(0).play();
     }
     //initialise Variables
-    level = 1; //initial level
+    level = 2; //initial level
     globalScore = 0;
     nbLives = 5; //initial number of live
     timeouts = [];
@@ -570,7 +570,7 @@ $(() => {
           addLife();
         }
         if (nbCoins === toCatchLevel){
-          $eventAudio.attr('src', ohYeah);
+          $eventAudio.attr('src', yeah);
           $eventAudio.get(0).play();
         }
 
