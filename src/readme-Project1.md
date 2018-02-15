@@ -15,16 +15,17 @@ It features 5 levels with different game speed and enemies. The 2 first levels a
 
 ###### In level 2, the difficulty increases as an additional enemy is bouncing back and forth and Mario needs to jump to avoid it. Mario moves to the next level on time up, as long as he does not get hit by an enemy.
 
-###### In level 3 , Mario needs to catch 30 coins within 45 seconds to make it to the next level, while still avoiding the enemies. If Mario doesn't reach 30 coins he loses 1 life and needs to try the level again. In that level a new enemy (evil turtle) appears and the coins drop faster.
 
-###### In level 4 , Mario needs to catch 30 coins within 45 seconds to make it to the next level, while still avoiding the enemies and the bouncing shell. It is getting more and more difficult for Mario.
+###### In level 3 , Mario needs to catch at least 30 coins within 45 seconds to unlock the next level. Mario still need to finish the level while avoiding the enemies. If Mario doesn't reach 30 coins he loses 1 life and needs to try the level again. In that level a new enemy (evil turtle) appears and the coins drop faster.
 
-###### In level 5, the last level, Mario has to be extra quick as he needs to catch 40 coins within 45 seconds to finish the game. The parameters in that level have been changed to allow more coins to drop from the sky.
+###### In level 4 , Mario needs to catchat least 30 coins within 45 seconds to unlock the next level, while still avoiding the enemies and the bouncing shell.
+
+###### In level 5, the last level, Mario has to be really fast as he needs to catch at least 40 coins within 45 seconds to finish the game. The parameters in that level have been changed to allow more coins to drop from the sky.
 
 ---
 I was pleased with the final product, which I feel looks good an plays well. The levels can easily be adapted to make them easier or more challenging. A new level can be added in 1 minute which will allow me to develop a larger game with new levels and challenges to further test the player’s skills.
 
-My main challenge in this game was to check for "collisions" on Mario jumping. In some cases the jump would happen just when the coin or enemy was dropping by 1 square which meant that Mario was missing the coin or not getting by the enemy despite jumping on it.
+My main challenge in this game was to check for "collisions" on Mario jumping. In some cases the jump would happen just when the coin or enemy was dropping by 1 square which meant that Mario was missing the coin or not getting hit by the enemy despite jumping on it.
 When this was solved, I would get the opposite effect, with a double counting of coins or double hit by enemies. I ended up using a marker to set a coin or bonus as 'caught' to avoid a double catch.
 There is still a little bug that I wish to correct which doesn't show Mario animation losing when hit by enemy while jumping.
 
