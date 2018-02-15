@@ -28,6 +28,7 @@ $(() => {
   let timerID = 0; //timerId of the global timer
   let timeOutId = 0; //timerid of of the timout that stops the timer
   let timeOutId2 = 0; //timer id of Mario jumping animation
+  let toCatchLevel = 0;
   let level; //initial level
   const levels = {
     1: level1,
@@ -71,7 +72,7 @@ $(() => {
     '2': 'Congratulations! Now, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> but try to catch the <img src="/images/lifeMushroomSmall.png" alt=" life "> as it will give you 1 additional life!',
     '3': 'Amazing! <img src="/images/coin-small.png" alt=" coins "> are falling quicker now! Try to catch 50 of them to get 1 additional life and keep avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">.',
     '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">',
-    '5': 'Great! Try to catch 50 coins to finish the game. Avoid the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
+    '5': 'Try to catch 40 coins to finish the game. Avoid the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
   };
   const instructionsMove = {
     '1': 'Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
@@ -134,7 +135,7 @@ $(() => {
       $backgroundAudio.get(0).play();
     }
     //initialise Variables
-    level = 3; //initial level
+    level = 1; //initial level
     globalScore = 0;
     nbLives = 5; //initial number of live
     timeouts = [];
@@ -259,30 +260,41 @@ $(() => {
     $BoardAndheader.css({backgroundImage: 'none'});
     $footer.css({backgroundImage: 'none'});
 
-    //HEADER update global score - updated only when time up and to next level
-    globalScore += nbCoins;
-    const scoreStr = `0000${globalScore}`;
-    $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is always 5 digit
+    if (nbCoins >= toCatchLevel || toCatchLevel === 0){ //if Mario catches enough coins
+      //HEADER update global score - updated only when time up and to next level
+      globalScore += nbCoins;
+      const scoreStr = `0000${globalScore}`;
+      $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is always 5 digit
 
-    //MIDDLE SECTION and BOTTOM SECTION
-    $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`);
-    $bottomSectionInstructions.html('');
-    $bottomSectionText.html('');
-    $bottomSectionImg.show();
-    $bottomSectionImg.attr('src',thumbsUpLogo);
-    $marioIntro.hide();
-    $arrowButton.hide();
+      //MIDDLE SECTION and BOTTOM SECTION
+      $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`);
+      $bottomSectionInstructions.html('');
+      $bottomSectionText.html('');
+      $bottomSectionImg.show();
+      $bottomSectionImg.attr('src',thumbsUpLogo);
+      $marioIntro.hide();
+      $arrowButton.hide();
 
-    //After 3 seconds go back to frame 2 for next level or frame 1 if all levels completed
-    setTimeout(() => {
-      level++;
-      if (level > Object.keys(levels).length){
-        firstFrame();
-      } else secondFrame();//on to next level as time is up and no enemy caught
-    }, 3000);
+      //After 3 seconds go back to frame 2 for next level or frame 1 if all levels completed
+      setTimeout(() => {
+        level++;
+        if (level > Object.keys(levels).length){
+          firstFrame();
+        } else secondFrame();//on to next level as time is up and no enemy caught
+      }, 3000);
+    } else {
+      //MIDDLE SECTION and BOTTOM SECTION
+      $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`);
+      $bottomSectionInstructions.html('Too bad ! You did not catch enough coins! <br> Try again!');
+      nbLives--;
+      $bottomSectionText.html('');
+      $marioIntro.hide();
+      $arrowButton.hide();
+      setTimeout(() => secondFrame(), 3000);
+    }
   }
 
-  //************************* GAME PLAN- LEVEL 1 ******************************
+  //************************* LEVEL 1 - no jumping******************************
 
   function level1(){
     //desactivate Mario jumping as not jumping in that level
@@ -290,24 +302,25 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 300;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 20;
+    const gameDuration = 45;
     const possibleTimes = [200, 500, 800]; //Possible time between each animation
-    const possibleElement = [ //repeated coins 2 x as want them to be 2 x more likely than enemies
+    //repeated coins 2 x as want them to be 2 x more likely than enemies
+    const possibleElement = [
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': enemyMushroom, 'class': 'enemy'}
     ];
-
+    toCatchLevel = 0;
     //Sets Music and image and animate coins, enemies and bonus for the level
     gamePlan(gameDuration, possibleTimes, possibleElement);
   }
 
-  //*************************GAME PLAN - LEVEL 2 *******************************
+  //************************* LEVEL 2: shell and jumping  **************************
   function level2(){
     //set speed for the level and Duration
     const avgIncrTimeOut = 300;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30; //change back to 30 seconds
+    const gameDuration = 45; //change back to 30 seconds
     const possibleTimes = [200, 500, 800]; //Possible time between each animation
     //repeated coins 3 x as want them to be 3 x more likely than enemies as this level and harder due to extra shell rolling on the ground
     const possibleElement = [
@@ -316,6 +329,7 @@ $(() => {
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': enemyMushroom, 'class': 'enemy'}
     ];
+    toCatchLevel = 0;
     //slow jumps so Mario has time to avoid rolling shell
     MarioJumpSpeed = 400;
 
@@ -327,14 +341,11 @@ $(() => {
     gamePlan(gameDuration, possibleTimes, possibleElement);
   }
 
-  //**************************** LEVEL 3: RANDOM GAME *******************************
+  //****************** LEVEL 3: faster game + more ennemies **********************
   function level3(){
-    //desactivate Mario jumping as not jumping in that level
-    //$(document).off('keydown', marioJump);
     //set speed for the level and Duration - Speed is higher for the coins now
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30;
-
+    const gameDuration = 45;
     const possibleTimes = [200, 350, 450]; //decreased possible interval between animations
     //Added a new type of enemy, repeated coins 3 x as want them to be as likely as enemies
     const possibleElement = [
@@ -346,6 +357,7 @@ $(() => {
       {'speed': rapidIncrTimeOut, 'picture': enemyTurtleFlying, 'class': 'enemy'},
       {'speed': rapidIncrTimeOut, 'picture': enemyTurtleFlying, 'class': 'enemy'}
     ];
+    toCatchLevel = 0;
     //Mario jump quicker
     MarioJumpSpeed = 300;
 
@@ -354,12 +366,11 @@ $(() => {
 
   }
 
-  //************************************ LEVEL 4 *******************************
+  //************************* LEVEL 4: shell + faster ****************************
   function level4(){
     //set speed for the level and Duration
     const rapidIncrTimeOut = 200;
-    const gameDuration = 10; //change back to 30 seconds
-
+    const gameDuration = 45; //change back to 30 seconds
     const possibleTimes = [200, 400, 600]; //decrease possible interval a bit
     //Added an extra type of enemy and we will still have the rolling shell
     const possibleElement = [
@@ -370,7 +381,7 @@ $(() => {
       {'speed': rapidIncrTimeOut, 'picture': enemyMushroom, 'class': 'enemy'},
       {'speed': rapidIncrTimeOut, 'picture': enemyTurtleFlying, 'class': 'enemy'}
     ];
-
+    toCatchLevel = 0;
     //slower jump speed as rolling shell on the floor
     MarioJumpSpeed = 400;
 
@@ -382,13 +393,13 @@ $(() => {
     gamePlan(gameDuration, possibleTimes, possibleElement);
   }
 
-  //**************************** LEVEL 5: MARIO TO CATCH CERTAIN NUMBER OF COINS **********************
+  //********** LEVEL 5: MARIO TO CATCH X NUMBER OF COINS **********************
   function level5(){
-    //desactivate Mario jumping as not jumping in that level
-    //$(document).off('keydown', marioJump);
+    //number of coins Mario needs to catch to mke it to end of game
+    toCatchLevel = 40;
     //set speed for the level and Duration - Speed is higher for the coins now
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30;
+    const gameDuration = 45;
 
     const possibleTimes = [200, 350, 450]; //decreased possible interval between animations
     //Added a new type of enemy, repeated coins 3 x as want them to be as likely as enemies
