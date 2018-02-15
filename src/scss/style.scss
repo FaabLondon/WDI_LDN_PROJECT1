@@ -72,7 +72,7 @@ body {
             align-items: center;
 
             p{
-              &.instructions{
+              &.instructionsMove{
                   animation: pulsating 0.5s linear alternate infinite;
               }
             }

@@ -10,9 +10,9 @@ $(() => {
   const $middleSection= $('.middleSection');
   const $footer= $('footer');
   const $middleSectionText = $('.middleSection p');
-  const $bottomSectionText = $('.bottomSection p.Leaderboard');
+  const $bottomSectionText = $('.bottomSection p.InstructionsGame');
   const $bottomSectionImg = $('.bottomSection img');
-  const $bottomSectionInstructions = $('.bottomSection p.instructions');
+  const $bottomSectionInstructions = $('.bottomSection p.instructionsMove');
   const $levelSpan = $('.levelSpan');
   const $coinsSpan = $('.coinsSpan');
   const $scoreSpan = $('.scoreSpan');
@@ -42,7 +42,6 @@ $(() => {
   let timeouts = []; //will store all timeouts
   let globalScore = 0;
   let MarioJumpSpeed;
-  let leaderBoard = {};
 
   //images and audio for Mario, ennemies and bonuses
   const coin = '<img class="coin" src="/images/coin.png" alt="coin">';
@@ -51,6 +50,9 @@ $(() => {
   const ennemyMushroom = '<img class="ennemy mushroom" src="/images/ennemyMushroom.png" alt="ennemy">';
   const ennemyTurtle = '<img class="ennemy shell" src="/images/ennemyTurtle.png" alt="ennemy">';
   const ennemyTurtleFlying = '<img class="ennemy flying" src="/images/ennemyTurtleFlying.png" alt="ennemy">';
+  const mainLogo = '/images/mainLogo.png';
+  const victoryLogo = '/images/logoVictory.png';
+  const thumbsUpLogo = '/images/logoThumbsUp.png';
   const marioRight = '<img class="mario" src="/images/littleMarioRight.png" alt="mario">';
   const marioLeft = '<img class="mario" src="/images/littleMarioLeft.png" alt="mario">';
   const marioLosing = '<img class="marioLost" src="/images/marioLosing.png" alt="mario">';
@@ -58,20 +60,20 @@ $(() => {
   const marioLosingSound = '/sounds/marioLosing.wav';
   const coinCaught = '/sounds/marioCoinSound.mp3';
   const gameOverSound = '/sounds/gameOver.wav';
-  const lifeMushroomcaught = 'sounds/newLife.wav';
+  const additionalLife = 'sounds/newLife.wav';
 
   //instructions per level
   const instructions = {
     '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies ">',
     '2': 'Congratulations! Now, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle "> but try to catch the <img src="/images/lifeMushroomSmall.png" alt=" life "> as it will give you 1 additional life!',
-    '3': 'Amazing! The <img src="/images/coin-small.png" alt=" coins "> are falling quicker now! Try avoiding more ennemies <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">',
+    '3': 'Amazing! <img src="/images/coin-small.png" alt=" coins "> are falling quicker now! Try to catch 50 of them to get 1 additional life and keep avoiding the <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">.',
     '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/ennemyTurtleSmall.png" alt=" ennemyTurtle "> the <img src="/images/ennemyMushroom-small.png" alt=" ennemies "> and the <img src="/images/ennemyTurtleFlyingSmall.png" alt=" ennemies ">'
   };
   const instructionsMove = {
     '1': 'Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
     '2': 'Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!',
-    '3': '',
-    '4': ''
+    '3': 'Use the <i class="fas fa-caret-left fa-sm"></i> and <i class="fas fa-caret-right fa-sm"></i> and <i class="fas fa-caret-up fa-sm"></i> to move Mario!',
+    '4': 'Use the <i class="fas fa-caret-left fa-sm"></i> and <i class="fas fa-caret-right fa-sm"></i> and <i class="fas fa-caret-up fa-sm"></i> to move Mario!'
   };
 
   //calculates total number of squares in grid
@@ -110,15 +112,17 @@ $(() => {
     $middleSectionText.addClass('animate');
     $arrow.show();
     $middleSectionText.text('Let\'s start!');
-    //BOTTOM SECTION
+    //MIDDLE SECTION AND BOTTOM SECTION IF START AGAIN
     $bottomSectionImg.show();
     if (globalScore > 0){
+      $middleSectionText.text('Let\'s play again!');
       $bottomSectionImg.hide();
-      //check if in top 5, //add score to leaderBoard object
-      $bottomSectionText.text('You made it to the Leader Board! Display Leaderboard'); //to update
+      $bottomSectionText.html(`CONGRATULATIONS! <br> You managed to catch ${globalScore} coins !`);
+      $bottomSectionImg.show();
+      $bottomSectionImg.attr('src',victoryLogo);
     }
     //initialise Variables
-    level = 3; //initial level
+    level = 4; //initial level
     globalScore = 0;
     nbLives = 5; //initial number of live
     timeouts = [];
@@ -172,7 +176,7 @@ $(() => {
   function nextLevel(){
     $middleSectionText.text(`   X   ${nbLives}`);
     $marioIntro.show();
-    //changes bottom section to instructions for next level
+    //changes bottom section to instructions for next level and the kind of moves possible
     $bottomSectionText.html(instructions[level]);
     $bottomSectionInstructions.html(instructionsMove[level]);
     $bottomSectionInstructions.addClass('animate'); //to make the instructions pulsate and move visible
@@ -251,6 +255,8 @@ $(() => {
     $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`);
     $bottomSectionInstructions.html('');
     $bottomSectionText.html('');
+    $bottomSectionImg.show();
+    $bottomSectionImg.attr('src',thumbsUpLogo);
     $marioIntro.hide();
     $arrowButton.hide();
 
@@ -271,7 +277,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30;
+    const gameDuration = 2;
     const possibleTimes = [200, 500, 800, 1000]; //Possible time between each animation
     const possibleElement = [ //repeated coins 2 x as want them to be 2 x more likely than ennemies
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
@@ -288,7 +294,7 @@ $(() => {
     //set speed for the level and Duration
     const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30; //change back to 30 seconds
+    const gameDuration = 2; //change back to 30 seconds
     const possibleTimes = [200, 500, 800, 1000]; //Possible time between each animation
     //repeated coins 3 x as want them to be 3 x more likely than ennemies as this level and harder due to extra shell rolling on the ground
     const possibleElement = [
@@ -298,7 +304,7 @@ $(() => {
       {'speed': rapidIncrTimeOut, 'picture': ennemyMushroom, 'class': 'ennemy'}
     ];
     //slow jumps so Mario has time to avoid rolling shell
-    MarioJumpSpeed = 400;
+    MarioJumpSpeed = 350;
 
     //add a rolling shell at the very beginning and during the whole duration of the game
     animateElementLeftRight(15, 1, 200, gameDuration * 1000, ennemyTurtle, 'ennemy');
@@ -314,11 +320,12 @@ $(() => {
     //$(document).off('keydown', marioJump);
     //set speed for the level and Duration - Speed is higher for the coins now
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30;
+    const gameDuration = 60;
 
-    const possibleTimes = [200, 500, 800, 1000]; //decreased possible interval between animations
+    const possibleTimes = [200, 350, 450]; //decreased possible interval between animations
     //Added a new type of ennemy, repeated coins 3 x as want them to be as likely as ennemies
     const possibleElement = [
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
@@ -337,25 +344,27 @@ $(() => {
   //************************************ LEVEL 4 *******************************
   function level4(){
     //set speed for the level and Duration
-    const avgIncrTimeOut = 400;
     const rapidIncrTimeOut = 200;
-    const gameDuration = 30; //change back to 30 seconds
+    const gameDuration = 2; //change back to 30 seconds
 
     const possibleTimes = [200, 500, 800, 1000]; //decrease possible interval a bit
     //Added an extra type of ennemy and we will still have the rolling shell
     const possibleElement = [
-      {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
-      {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
-      {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyMushroom, 'class': 'ennemy'},
       {'speed': rapidIncrTimeOut, 'picture': ennemyTurtleFlying, 'class': 'ennemy'}
     ];
 
     //slower jump speed as rolling shell on the floor
-    MarioJumpSpeed = 400;
+    MarioJumpSpeed = 350;
 
     //add a rolling shell at the very beginning and during the whole duration of the game
     animateElementLeftRight(15, 1, 200, gameDuration * 1000, ennemyTurtle, 'ennemy');
+    //add a new life midGame as game is quite hard...
+    animateElementDown(4, 17000, 200, lifeMushroom, 'life');
     //Animate coins, ennemies and bonus
     gamePlan(gameDuration, possibleTimes, possibleElement);
   }
@@ -495,6 +504,10 @@ $(() => {
         setTimeout(() => $eventAudio.get(0).pause(), 400);
         //increment nbCoins and update number of coins on screen
         nbCoins++;
+        //Every 50 coins caught in one game, gives 1 additional life
+        if (nbCoins % 50 === 0){
+          addLife();
+        }
         $coinsSpan.text(nbCoins);
         return true;
       }
@@ -518,16 +531,22 @@ $(() => {
         //adds coin caught in div below to make sure coin is caught on jump
         $($squares[i+nbColumns]).addClass('caught');
         $($squares[i]).removeClass('life');
-        //change audio when mario catches lifeMushroom
-        $eventAudio.attr('src', lifeMushroomcaught);
-        $eventAudio.get(0).play();
-        setTimeout(() => $eventAudio.get(0).pause(), 1000);
-        //increment nblifes
-        nbLives++;
+        addLife();
         return true;
       }
     }
     return false;
+  }
+
+  //************************ ADDITIONAL LIFE ***********************************
+
+  function addLife(){
+    //change audio when mario catches lifeMushroom
+    $eventAudio.attr('src', additionalLife);
+    $eventAudio.get(0).play();
+    setTimeout(() => $eventAudio.get(0).pause(), 1000);
+    //increment nblifes
+    nbLives++;
   }
 
   //************************ WHEN MARIO LOSES **********************************
