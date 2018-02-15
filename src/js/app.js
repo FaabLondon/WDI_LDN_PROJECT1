@@ -69,9 +69,9 @@ $(() => {
   //instructions per level
   const instructions = {
     '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies ">',
-    '2': 'Congratulations! Now, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> but try to catch the <img src="/images/lifeMushroomSmall.png" alt=" life "> as it will give you 1 additional life!',
-    '3': 'Amazing! <img src="/images/coin-small.png" alt=" coins "> are falling quicker now! Try to catch 50 of them to get 1 additional life and keep avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">.',
-    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">',
+    '2': 'Now, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> but try to catch the <img src="/images/lifeMushroomSmall.png" alt=" life "> as it will give you 1 additional life!',
+    '3': '<img src="/images/coin-small.png" alt=" coins "> are falling quicker now! Try to catch 50 of them to get 1 additional life and keep avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">.',
+    '4': 'Try to catch 30 coins to finish the game. Avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">',
     '5': 'Try to catch 40 coins to finish the game. Avoid the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
   };
   const instructionsMove = {
@@ -267,7 +267,7 @@ $(() => {
       $scoreSpan.text(scoreStr.substr(scoreStr.length - 5)); // length is always 5 digit
 
       //MIDDLE SECTION and BOTTOM SECTION
-      $middleSectionText.text(`Time's up! You caught ${nbCoins} coins!`);
+      $middleSectionText.html(`Time's up! <br><br> ${nbCoins > 10 ? 'Congratulations!' : ' '}You caught ${nbCoins} coins!`);
       $bottomSectionInstructions.html('');
       $bottomSectionText.html('');
       $bottomSectionImg.show();
@@ -368,6 +368,7 @@ $(() => {
 
   //************************* LEVEL 4: shell + faster ****************************
   function level4(){
+    toCatchLevel = 30;
     //set speed for the level and Duration
     const rapidIncrTimeOut = 200;
     const gameDuration = 45; //change back to 30 seconds
@@ -381,7 +382,6 @@ $(() => {
       {'speed': rapidIncrTimeOut, 'picture': enemyMushroom, 'class': 'enemy'},
       {'speed': rapidIncrTimeOut, 'picture': enemyTurtleFlying, 'class': 'enemy'}
     ];
-    toCatchLevel = 0;
     //slower jump speed as rolling shell on the floor
     MarioJumpSpeed = 400;
 
