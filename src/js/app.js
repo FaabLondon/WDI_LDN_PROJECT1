@@ -133,7 +133,7 @@ $(() => {
       $backgroundAudio.get(0).play();
     }
     //initialise Variables
-    level = 2; //initial level
+    level = 3; //initial level
     globalScore = 0;
     nbLives = 5; //initial number of live
     timeouts = [];
@@ -150,6 +150,7 @@ $(() => {
     $('div .enemy').toggleClass('enemy');
     $('div .mario').removeClass('mario');
     $('div .marioLost').removeClass('marioLost');
+    $('div .caught').removeClass('caught');
 
     //Update frame with new score, instructions etc.
     //Hide grid and show all sections
@@ -491,7 +492,7 @@ $(() => {
     //remove class 'type' on the div and check that mario image doesn't get replaced by coin or enemy
     timeouts.push(setTimeout(() => {
       if ($($squares[i]).hasClass(type)) $($squares[i]).removeClass(type);
-      if (!$($squares[i]).hasClass('mario')) $($squares[i]).html('');
+      if (!$($squares[i]).hasClass('mario') && !$($squares[i]).hasClass('marioLost')) $($squares[i]).html('');
     }, timeOutIncrement));
 
     return timeOutIncrement;
@@ -500,7 +501,6 @@ $(() => {
   //************************ CHECKS WETHER COIN/ENEMY/BONUS HIT*******************
 
   function checkHit(i, jump){
-
     //if we have Mario and a coin in the same div, it is a hit
     if (($($squares[i + nbColumns]).hasClass('mario') && $($squares[i]).hasClass('coin') && jump === true) || ($($squares[i]).hasClass('mario') && $($squares[i]).hasClass('coin') && jump === false)) {
       //if coin already caught then remove class caught and nothing happens
