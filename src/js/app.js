@@ -70,9 +70,9 @@ $(() => {
   const instructions = {
     '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies ">. For each 50 coins caught, you get 1 additional life',
     '2': 'Now, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> but try to catch the <img src="/images/lifeMushroomSmall.png" alt=" life "> for 1 additional life!',
-    '3': '<img src="/images/coin-small.png" alt=" coins "> are quicker now! You need to catch 30 of them to progress to the next level. Keep avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">.',
-    '4': 'You need to catch 30 coins to finish the game. Avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">',
-    '5': 'You need to catch 40 coins to finish the game. Avoid the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
+    '3': '<img src="/images/coin-small.png" alt=" coins "> are quicker now! You need to catch at least 30 of them to unlock the next level. Keep avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">.',
+    '4': 'You need to catch at least 30 coins to unlock the next level. Avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">',
+    '5': 'You need to catch at least 40 coins to finish the game! Avoid the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
   };
   const instructionsMove = {
     '1': 'Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
@@ -125,7 +125,7 @@ $(() => {
     if (globalScore > 0){
       $middleSectionText.text('Let\'s play again!');
       $bottomSectionImg.hide();
-      $bottomSectionText.html(`CONGRATULATIONS! <br> You managed to catch ${globalScore} coins !`);
+      $bottomSectionText.html(`You managed to catch ${globalScore} coins !`);
       $bottomSectionImg.show();
       $bottomSectionImg.attr('src',victoryLogo);
       //change audio to end of game
