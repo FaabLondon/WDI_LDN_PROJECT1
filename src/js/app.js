@@ -271,8 +271,8 @@ $(() => {
       $middleSectionText.html(`Time's up! <br><br> ${nbCoins > 10 ? 'Congratulations!' : ' '}You caught ${nbCoins} coins!`);
       $bottomSectionInstructions.html('');
       $bottomSectionText.html('');
-      $bottomSectionImg.show();
       $bottomSectionImg.attr('src',thumbsUpLogo);
+      $bottomSectionImg.show();
       $marioIntro.hide();
       $arrowButton.hide();
 
@@ -306,7 +306,7 @@ $(() => {
     const avgIncrTimeOut = 300;
     const rapidIncrTimeOut = 200;
     const gameDuration = 45;
-    const possibleTimes = [200, 500, 800]; //Possible time between each animation
+    const possibleTimes = [200, 400, 700]; //Possible time between each animation
     //repeated coins 2 x as want them to be 2 x more likely than enemies
     const possibleElement = [
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
@@ -326,7 +326,7 @@ $(() => {
     const avgIncrTimeOut = 300;
     const rapidIncrTimeOut = 200;
     const gameDuration = 45; //change back to 30 seconds
-    const possibleTimes = [200, 500, 800]; //Possible time between each animation
+    const possibleTimes = [200, 400, 700]; //Possible time between each animation
     //repeated coins 3 x as want them to be 3 x more likely than enemies as this level and harder due to extra shell rolling on the ground
     const possibleElement = [
       {'speed': avgIncrTimeOut, 'picture': coin, 'class': 'coin'},
