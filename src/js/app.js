@@ -115,7 +115,7 @@ $(() => {
     //initiliase content of the page
     //TOP SECTION
     if (level > Object.keys(levels).length) $topSection.text('You completed the game!');
-    else $topSection.text('Welcome to Mario Coin catcher!');
+    else $topSection.text('Mario Coin catcher!');
     //MIDDLE SECTION
     $middleSectionText.addClass('animate');
     $arrow.show();
@@ -343,7 +343,7 @@ $(() => {
     //add a rolling shell at the very beginning and during the whole duration of the game
     animateElementLeftRight(15, 1, 200, gameDuration * 1000, enemyTurtleLeft, enemyTurtleRight, 'enemy');
     //add a new life midGame as game is quite hard...
-    animateElementDown(4, 12000, 200, lifeMushroom, 'life');
+    animateElementDown(Math.floor(Math.random() * (nbColumns)), 12000, 200, lifeMushroom, 'life');
     //Animate coins, enemies and bonus
     gamePlan(gameDuration, possibleTimes, possibleElement);
   }
@@ -398,7 +398,7 @@ $(() => {
     //add a rolling shell at the very beginning and during the whole duration of the game
     animateElementLeftRight(15, 1, 200, gameDuration * 1000, enemyTurtleLeft, enemyTurtleRight, 'enemy');
     //add a new life midGame as game is quite hard...
-    animateElementDown(4, 17000, 200, lifeMushroom, 'life');
+    animateElementDown(Math.floor(Math.random() * (nbColumns)), 17000, 200, lifeMushroom, 'life');
     //Animate coins, enemies and bonus
     gamePlan(gameDuration, possibleTimes, possibleElement);
   }
