@@ -111,26 +111,34 @@ body {
             position: relative;
 
             img{
-              position: absolute; //so that Mario can move when hit by ennemy
+              position: absolute; //so that Mario can move when hit by enemy
 
                 &.marioLost{
                   animation: moveUpAndDown 3s linear;
                 }
 
                 &.coin{
-                  animation: moveDown 400ms linear;
+                  animation: moveDownCoin 400ms linear;
                 }
 
                 &.coin.faster{
-                  animation: moveDown 200ms linear;
+                  animation: moveDownCoin 200ms linear;
                 }
 
-                &.ennemy.mushroom, &.ennemy.flying{
-                  animation: moveDown 200ms linear;
+                &.enemy.mushroom, &.life{
+                  animation: moveDownMushroom 200ms linear;
                 }
 
-                &ennemy.shell{
-                  //animation: moveDown 200ms linear;
+                &.enemy.flying{
+                  animation: moveDownFlying 200ms linear;
+                }
+
+                &.enemy.shell.left{
+                  animation: moveLeft 200ms linear;
+                }
+
+                &.enemy.shell.right{
+                  animation: moveRight 200ms linear;
                 }
               }
             }
@@ -158,8 +166,32 @@ body {
     100% {color: black;}
 }
 
-@-webkit-keyframes moveDown{
+@-webkit-keyframes moveDownMushroom{
   0%  {top: -35px;}
   50% {top: 0px;}
   100% {top: 35px;}
+}
+
+@-webkit-keyframes moveDownCoin{
+  0%  {top: -37.5px;}
+  50% {top: 0px;}
+  100% {top: 37.5px;}
+}
+
+@-webkit-keyframes moveDownFlying{
+  0%  {top: -39.5px;}
+  50% {top: 0px;}
+  100% {top: 39.5px;}
+}
+
+@-webkit-keyframes moveLeft{
+  0%  {left: 33px;}
+  50% {left: 0px;}
+  100% {left: -33px;}
+}
+
+@-webkit-keyframes moveRight{
+  0%  {right: 33px;}
+  50% {right: 0px;}
+  100% {right: -33px;}
 }
