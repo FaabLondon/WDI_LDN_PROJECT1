@@ -144,15 +144,6 @@ $(() => {
 
   //***************************DISPLAYS SECOND FRAME****************************
   function secondFrame(){
-    //If game was previously running clear the grid and classes.
-    //clear all pictures from the grid
-    $($squares).html('');
-    //reset classes after game stops
-    $('div .coin').toggleClass('coin');
-    $('div .enemy').toggleClass('enemy');
-    $('div .mario').removeClass('mario');
-    $('div .marioLost').removeClass('marioLost');
-    $('div .caught').removeClass('caught');
 
     //Update frame with new score, instructions etc.
     //Hide grid and show all sections
@@ -218,6 +209,15 @@ $(() => {
 
   //********************************* FRAME TO START GAME ***********************
   function levelStart(){
+    //clear all pictures from the grid
+    $($squares).html('');
+    //reset classes after game stops
+    $('div .coin').removeClass('coin');
+    $('div .enemy').removeClass('enemy');
+    $('div .mario').removeClass('mario');
+    $('div .marioLost').removeClass('marioLost');
+    $('div .caught').removeClass('caught');
+    $('div .life').removeClass('life');
     //Show the grid and hide the $sections
     $sections.hide();
     $grid.show();
@@ -604,22 +604,24 @@ $(() => {
   //************************ WHEN MARIO LOSES **********************************
 
   function MarioLosing(){
-    //clear global Timer, timeout to avoid going to time's up screen and timeout of Mario Jumping
+    //desactivate Mario moving on all keydown and clear screen
+    $(document).off('keydown');
+    $(document).off('keydown');
+    $($squares).html('');
+    //reset classes after game stops
+
+    //clear global Timer, timeout to avoid going to time's up screen and timeout of Mario jumping
     clearInterval(timerID);
     clearTimeout(timeOutId);
     clearTimeout(timeOutId2); //stops Mario from moving after he is hit by enemy
     timer = 0; //re-initialise global timer
-    //desactivate Mario moving on all keydown
-    $(document).off('keydown');
-
-    $($squares).html('');
-
     //clear all timeouts (animation) in the game to stop them
     for (let i = 0; i < timeouts.length; i++) {
       clearTimeout(timeouts[i]);
     }
     //Animates Mario on losing - see css animation
     $($squares[marioPos]).html(marioLosing);
+
     //stop playing level Music and change to 'losing' music
     $backgroundAudio.get(0).pause();
     $eventAudio.attr('src', marioLosingSound);
