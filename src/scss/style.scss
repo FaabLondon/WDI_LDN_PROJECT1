@@ -118,7 +118,7 @@ body {
                 }
 
                 &.coin{
-                  animation: moveDownCoin 400ms linear;
+                  animation: moveDownCoin 300ms linear;
                 }
 
                 &.coin.faster{
@@ -153,6 +153,8 @@ body {
     }
   }
 }
+
+//different animations for different elements as their size is a bit different
 
 @-webkit-keyframes moveUpAndDown{
     0%  {top: 0;}
