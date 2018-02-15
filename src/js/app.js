@@ -33,7 +33,8 @@ $(() => {
     1: level1,
     2: level2,
     3: level3,
-    4: level4
+    4: level4,
+    5: level5
   };
   let nbLives = 0; //initial number of lives
   const nbColumns = 19;
@@ -51,7 +52,6 @@ $(() => {
   const enemyTurtleLeft = '<img class="enemy shell left" src="/images/enemyTurtle.png" alt="enemy">';
   const enemyTurtleRight = '<img class="enemy shell right" src="/images/enemyTurtle.png" alt="enemy">';
   const enemyTurtleFlying = '<img class="enemy flying" src="/images/enemyTurtleFlying.png" alt="enemy">';
-  const mainLogo = '/images/mainLogo.png';
   const victoryLogo = '/images/logoVictory.png';
   const thumbsUpLogo = '/images/logoThumbsUp.png';
   const marioRight = '<img class="mario" src="/images/littleMarioRight.png" alt="mario">';
@@ -70,13 +70,15 @@ $(() => {
     '1': 'Marioooo, try to catch as many <img src="/images/coin-small.png" alt=" coins "> as possible while avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies ">',
     '2': 'Congratulations! Now, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> but try to catch the <img src="/images/lifeMushroomSmall.png" alt=" life "> as it will give you 1 additional life!',
     '3': 'Amazing! <img src="/images/coin-small.png" alt=" coins "> are falling quicker now! Try to catch 50 of them to get 1 additional life and keep avoiding the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">.',
-    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and the <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
+    '4': 'Amazing! Try again and this time, avoid the rolling <img src="/images/enemyTurtleSmall.png" alt=" enemyTurtle "> the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">',
+    '5': 'Great! Try to catch 50 coins to finish the game. Avoid the <img src="/images/enemyMushroom-small.png" alt=" enemies "> and <img src="/images/enemyTurtleFlyingSmall.png" alt=" enemies ">'
   };
   const instructionsMove = {
     '1': 'Press the <i class="fas fa-caret-left fa-sm"></i> button to go left and the <i class="fas fa-caret-right fa-sm"></i> button to go right.',
     '2': 'Use the <i class="fas fa-caret-up fa-sm"></i> button to jump!',
     '3': 'Use the <i class="fas fa-caret-left fa-sm"></i> and <i class="fas fa-caret-right fa-sm"></i> and <i class="fas fa-caret-up fa-sm"></i> to move Mario!',
-    '4': 'Use the <i class="fas fa-caret-left fa-sm"></i> and <i class="fas fa-caret-right fa-sm"></i> and <i class="fas fa-caret-up fa-sm"></i> to move Mario!'
+    '4': 'Use the <i class="fas fa-caret-left fa-sm"></i> and <i class="fas fa-caret-right fa-sm"></i> and <i class="fas fa-caret-up fa-sm"></i> to move Mario!',
+    '5': 'Use the <i class="fas fa-caret-left fa-sm"></i> and <i class="fas fa-caret-right fa-sm"></i> and <i class="fas fa-caret-up fa-sm"></i> to move Mario!'
   };
 
   //calculates total number of squares in grid
@@ -117,7 +119,6 @@ $(() => {
     $middleSectionText.text('Let\'s start!');
     //BOTTOM SECTION
     $bottomSectionImg.show();
-    $bottomSectionImg.attr('src',mainLogo);
 
     //IF START AGAIN - MIDDLE SECTION AND BOTTOM SECTION
     if (globalScore > 0){
@@ -272,7 +273,7 @@ $(() => {
     $marioIntro.hide();
     $arrowButton.hide();
 
-    //After 3 seconds go back to frame 2 for next level
+    //After 3 seconds go back to frame 2 for next level or frame 1 if all levels completed
     setTimeout(() => {
       level++;
       if (level > Object.keys(levels).length){
@@ -379,6 +380,33 @@ $(() => {
     animateElementDown(4, 17000, 200, lifeMushroom, 'life');
     //Animate coins, enemies and bonus
     gamePlan(gameDuration, possibleTimes, possibleElement);
+  }
+
+  //**************************** LEVEL 5: MARIO TO CATCH CERTAIN NUMBER OF COINS **********************
+  function level5(){
+    //desactivate Mario jumping as not jumping in that level
+    //$(document).off('keydown', marioJump);
+    //set speed for the level and Duration - Speed is higher for the coins now
+    const rapidIncrTimeOut = 200;
+    const gameDuration = 30;
+
+    const possibleTimes = [200, 350, 450]; //decreased possible interval between animations
+    //Added a new type of enemy, repeated coins 3 x as want them to be as likely as enemies
+    const possibleElement = [
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': coinFaster, 'class': 'coin'},
+      {'speed': rapidIncrTimeOut, 'picture': enemyMushroom, 'class': 'enemy'},
+      {'speed': rapidIncrTimeOut, 'picture': enemyTurtleFlying, 'class': 'enemy'},
+      {'speed': rapidIncrTimeOut, 'picture': enemyTurtleFlying, 'class': 'enemy'}
+    ];
+    //Mario jump quicker
+    MarioJumpSpeed = 300;
+
+    //Animate coins, enemies and bonus
+    gamePlan(gameDuration, possibleTimes, possibleElement);
+
   }
 
   //****************************** IMPLEMENTS GAME PLAN **********************************
@@ -514,7 +542,7 @@ $(() => {
         $eventAudio.attr('src', coinCaught);
         $eventAudio.get(0).play();
         //had to reduce timeOut delay as when coins caught close one after another, no new sound was played
-        setTimeout(() => $eventAudio.get(0).pause(), 400);
+        //setTimeout(() => $eventAudio.get(0).pause(), 400);
         //increment nbCoins and update number of coins on screen
         nbCoins++;
         //Every 50 coins caught in one game, gives 1 additional life
