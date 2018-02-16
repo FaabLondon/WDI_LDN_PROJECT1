@@ -11,6 +11,7 @@ It features 5 levels with different game speed and enemies. The 2 first levels a
 ######As the player progresses, more enemies are added on each level, with a higher velocity and extra challenges (e.g.: catching a specific number of coins). When Mario catches a coin, the coin counter is incremented. If Mario gets hit by an enemy, he needs to start again. Mario starts the game with 5 lives but can get an additional life for every 50 coins caught in one level. Some "life mushroom" are also offered in certain levels.
 
 ###### Level 1 gives the player 45 seconds to catch as many coins as possible while avoiding the enemies (evil mushroom). In that level, Mario can not jump yet. The enemies and coins are dropping from the sky randomly based on the parameters given for that level (speed of all elements, possible delay between each animation, proportion of coins vs. enemies).
+
 <blockquote class="imgur-embed-pub" lang="en" data-id="a/Wxphh"><a href="//imgur.com/Wxphh"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 ###### In level 2, the difficulty increases as an additional enemy is bouncing back and forth and Mario needs to jump to avoid it. Mario moves to the next level on time up, as long as he does not get hit by an enemy.
