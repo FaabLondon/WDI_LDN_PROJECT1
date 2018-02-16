@@ -137,7 +137,7 @@ $(() => {
       $backgroundAudio.get(0).play();
     }
     //initialise Variables
-    level = 2; //initial level
+    level = 1; //initial level
     globalScore = 0;
     nbLives = 5; //initial number of live
     timeouts = [];
