@@ -44,7 +44,7 @@ There is still a little bug that I wish to correct, which doesn't show Mario ani
 ## Setup instructions
 
 - Clone or download the repo
-- Install dependencies with `yarn install`
+- Install dependencies with `yarn install` or `npm install`
 - Launch the app with `gulp`
 
 >**NB**: You will need to have installed `gulp-cli` globally
