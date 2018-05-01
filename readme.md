@@ -3,7 +3,7 @@
 # GA WDI-32 Project 1 - Mario coin catcher
 For my first project, I was given 1 week to design and build an in-browser game using HTML, CSS and JavaScript (jQuery library used). Mario Coin catcher was inspired by the Super Mario Bros game on the NES console. It features Mario, who needs to catch as many coins as possible in each level while avoiding getting hit by enemies.
 It features 5 levels with different game speed, enemies and tasks. The 2 first levels are an introduction to the game, its enemies and Mario moves, while the last 3 levels have an extra challenge as Mario needs to catch a certain number of coins in order to progress to the next level.
-This game has been for desktop only.
+This game has been developed for desktop and Chrome only.
 
 ##### [Visit website](https://mario-coin-catcher.herokuapp.com/) for best playing experience (the game was not designed for mobile or tablet).
 
