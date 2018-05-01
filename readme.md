@@ -38,6 +38,7 @@ I would have liked to add additional features like a second player and additiona
 My main challenge in this game was to check for "collisions" on Mario jumping. In some cases the jump would happen just when the coin/enemy was dropping by 1 square which meant that Mario was missing the coin or not getting hit by the enemy despite jumping on it.
 When this was solved, I would get the opposite effect, with a double counting of coins or double hit by enemies. I ended up using a marker to set a coin or bonus as 'caught' to avoid a double catch.
 There is still a little bug that I wish to correct, which doesn't show Mario animation and music when he gets hit by an enemy while jumping.
+Finally, this app only works on Chrome. On IE, Firefox or Safari the design or animations do not work as well.
 
 ---
 
