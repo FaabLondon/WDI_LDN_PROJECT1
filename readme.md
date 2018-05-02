@@ -5,13 +5,13 @@ For my first project, I was given 1 week to design and build an in-browser game 
 It features 5 levels with different game speed, enemies and tasks. The 2 first levels are an introduction to the game, its enemies and Mario moves, while the last 3 levels have an extra challenge as Mario needs to catch a certain number of coins in order to progress to the next level.
 This game has been developed for desktop and Chrome only and was not designed for mobile or tablet.
 
-##### [Visit website](https://mario-coin-catcher.herokuapp.com/) 
+##### [Visit website](https://mario-coin-catcher.herokuapp.com/)
 
 Mario coin catcher makes use of a HTML grid and JQuery in order to animate the different elements (coins, enemies, bonus, Mario) in the grid and check for collisions. The elements move on the grid by having their picture and class changed. To make the animations look more linear, I used css animations to "smooth" the transition between 2 squares of the grid.
 
 As the player progresses, more enemies are added on each level, with a higher velocity and extra challenges (e.g.: catching a specific number of coins). When Mario catches a coin, the coin counter is incremented. If Mario gets hit by an enemy, he needs to start again. Mario starts the game with 5 lives but can get an additional life for every 50 coins caught in one level. Some "life mushroom" are also offered in certain levels.
 
-###### Level 1 gives the player 30 seconds to catch as many coins as possible while avoiding the enemies (evil mushroom). In that level, Mario can not jump yet. The enemies and coins are dropping from the sky randomly based on the parameters given for that level (speed of all elements, possible delay between each animation, proportion of coins vs. enemies).
+###### In level 1 th eplayer has to catch as many coins as possible while avoiding the enemies (evil mushroom). In that level, Mario can not jump yet. The enemies and coins are dropping from the sky randomly based on the parameters given for that level (speed of all elements, possible delay between each animation, proportion of coins vs. enemies).
 
 <p align="center"><img src="https://i.imgur.com/Ie2rfZl.png" width="700"></p>
 
@@ -33,7 +33,7 @@ As the player progresses, more enemies are added on each level, with a higher ve
 
 ---
 I was pleased with the final product, which I feel looks good an plays well. The levels can easily be adapted to make them easier or more challenging. A new level can be added in 1 minute which allows to develop a larger game with new levels and challenges to further test the player’s skills.
-I would have liked to add additional features like a second player and additional enemies with different behaviours.
+I would have liked to add additional features like a score card, a second player and additional enemies with different behaviours.
 
 My main challenge in this game was to check for "collisions" on Mario jumping. In some cases the jump would happen just when the coin/enemy was dropping by 1 square which meant that Mario was missing the coin or not getting hit by the enemy despite jumping on it.
 When this was solved, I would get the opposite effect, with a double counting of coins or double hit by enemies. I ended up using a marker to set a coin or bonus as 'caught' to avoid a double catch.
