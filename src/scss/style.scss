@@ -3,7 +3,7 @@ body {
   color: white;
   font-family: 'VT323', monospace;
   margin: 0 auto;
-  height: 100vh;
+  height: 800px; //changed as was 100vh which did not work on different screen size with the footer Mario is running on.
   font-size: 32px;
   padding: 0;
   border: 0;
