@@ -11,7 +11,7 @@ Mario coin catcher makes use of a HTML grid and JQuery in order to animate the d
 
 As the player progresses, more enemies are added on each level, with a higher velocity and extra challenges (e.g.: catching a specific number of coins). When Mario catches a coin, the coin counter is incremented. If Mario gets hit by an enemy, he needs to start again. Mario starts the game with 5 lives but can get an additional life for every 50 coins caught in one level. Some "life mushroom" are also offered in certain levels.
 
-###### In level 1 th eplayer has to catch as many coins as possible while avoiding the enemies (evil mushroom). In that level, Mario can not jump yet. The enemies and coins are dropping from the sky randomly based on the parameters given for that level (speed of all elements, possible delay between each animation, proportion of coins vs. enemies).
+###### In level 1 the player has to catch as many coins as possible while avoiding the enemies (evil mushroom). In that level, Mario can not jump yet. The enemies and coins are dropping from the sky randomly based on the parameters given for that level (speed of all elements, possible delay between each animation, proportion of coins vs. enemies).
 
 <p align="center"><img src="https://i.imgur.com/Ie2rfZl.png" width="700"></p>
 
@@ -32,13 +32,22 @@ As the player progresses, more enemies are added on each level, with a higher ve
 <p align="center"><img src="https://i.imgur.com/vkQZkex.png" width="700"></p>
 
 ---
-I was pleased with the final product, which I feel looks good an plays well. The levels can easily be adapted to make them easier or more challenging. A new level can be added in 1 minute which allows to develop a larger game with new levels and challenges to further test the player’s skills.
-I would have liked to add additional features like a score card, a second player and additional enemies with different behaviours.
 
+## Wins
+I was pleased with the final product, which I feel looks good an plays well. The levels can easily be adapted to make them easier or more challenging. A new level can be added in 1 minute which allows to develop a larger game with new levels and challenges to further test the player’s skills.
+
+## Challenges
 My main challenge in this game was to check for "collisions" on Mario jumping. In some cases the jump would happen just when the coin/enemy was dropping by 1 square which meant that Mario was missing the coin or not getting hit by the enemy despite jumping on it.
 When this was solved, I would get the opposite effect, with a double counting of coins or double hit by enemies. I ended up using a marker to set a coin or bonus as 'caught' to avoid a double catch.
+I wish I had used collisions to make this game rather than using a grid which is less precise.
 There is still a little bug that I wish to correct, which doesn't show Mario animation and music when he gets hit by an enemy while jumping.
 Finally, this app only works on Chrome. On IE, Firefox or Safari the design or animations do not work as well.
+
+## Future features
+I would like to add additional features like a score card, a second player and additional enemies with different behaviours.
+Ideally, I would redo the whole game using collision this time, not a grid.
+
+
 
 ---
 
